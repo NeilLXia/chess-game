@@ -1,0 +1,25 @@
+{
+  "extends": "airbnb",
+  "ignorePatterns": ["main.js", "styles.css"],
+  "css.lint.unknownAtRules": "ignore",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {},
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": {
+        "map": [["Client", "./client/src/"]],
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
+}
