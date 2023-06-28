@@ -4,16 +4,25 @@ import * as ReactDOM from "react-dom/client";
 
 import "./css/app.css";
 
+import { UserContext, BoardContext } from "./contexts/userContext";
 import initialBoardState from "./lib/initialBoardState";
 import Chessboard from "./components/chessboard";
 
 const App = () => {
   const [boardState, setBoardState] = useState(initialBoardState);
-  const [userState, setUserState] = useState("");
+  const [userState, setUserState] = useState({
+    turn: "white",
+    selected: -1,
+    state: "none",
+  });
 
   return (
     <div id="app">
-      <Chessboard boardState={boardState} setBoardState={setBoardState} />
+      <BoardContext.Provider value={[boardState, setBoardState]}>
+        <UserContext.Provider value={[userState, setUserState]}>
+          <Chessboard />
+        </UserContext.Provider>
+      </BoardContext.Provider>
     </div>
   );
 };
