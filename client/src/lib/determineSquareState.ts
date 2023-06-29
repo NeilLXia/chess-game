@@ -3,6 +3,12 @@ import { useContext } from "react";
 import { UserContext, BoardContext } from "../contexts/userContext";
 
 import inMoveRange from "./inMoveRange";
+import {
+  checkCardinalAlignment,
+  checkDiagonalAlignment,
+} from "./checkAlignment";
+import checkCollision from "./checkCollision";
+import checkExtension from "./checkExtension";
 
 interface determineSquareStateProps {
   boardState: Array<{ color: string; type: string }>;
@@ -19,11 +25,78 @@ const determineSquareState = (props: determineSquareStateProps) => {
   const selectedIndex = userState.selected;
   const selectedPiece = boardState[selectedIndex];
 
+  // Determine move conditions for a king in check
+  const kingIndex = boardState.findIndex(
+    (piece: { color: string; type: string }) =>
+      piece.color === userState.turn && piece.type === "K"
+  );
+
+  const kingLocation = { x: kingIndex % 8, y: Math.floor(kingIndex / 8) };
   if (
     userState.state === "none" &&
     piece.type !== "" &&
     userState.turn === piece.color
   ) {
+    if (checkCardinalAlignment(x, y, kingLocation.x, kingLocation.y)) {
+      if (
+        checkCollision({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          isTakeAction: false,
+        }) &&
+        !checkExtension({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          pieces: ["R", "Q"],
+        })
+      ) {
+        return "";
+      }
+    }
+    if (checkDiagonalAlignment(x, y, kingLocation.x, kingLocation.y)) {
+      console.log(
+        x,
+        y,
+        kingLocation.x,
+        kingLocation.y,
+        !checkCollision({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          isTakeAction: false,
+        }),
+        checkExtension({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          pieces: ["B", "Q"],
+        })
+      );
+      if (
+        !checkCollision({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          isTakeAction: false,
+        }) &&
+        !checkExtension({
+          boardState,
+          selectedIndex: kingIndex,
+          x,
+          y,
+          pieces: ["B", "Q"],
+        })
+      ) {
+        return "";
+      }
+    }
     return "selectPiece";
   }
 

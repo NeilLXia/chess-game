@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom/client";
 
 import "./css/app.css";
 
-import { UserContext, BoardContext } from "./contexts/userContext";
+import { UserContext, BoardContext, KingContext } from "./contexts/userContext";
 import initialBoardState from "./lib/initialBoardState";
 import Chessboard from "./components/chessboard";
 
@@ -14,6 +14,8 @@ const App = () => {
     turn: "white",
     selected: -1,
     state: "none",
+    canBlackCastle: true,
+    canWhiteCastle: true,
   });
 
   return (

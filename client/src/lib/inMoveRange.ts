@@ -1,4 +1,8 @@
 import checkCollision from "./checkCollision";
+import {
+  checkCardinalAlignment,
+  checkDiagonalAlignment,
+} from "./checkAlignment";
 
 interface inMoveRangeProps {
   boardState: Array<{ color: string; type: string }>;
@@ -15,35 +19,34 @@ const inMoveRange = ({
   y,
   isTakeAction,
 }: inMoveRangeProps) => {
-  const selectedX = selectedIndex % 8;
-  const selectedY = Math.floor(selectedIndex / 8);
+  const selected = { x: selectedIndex % 8, y: Math.floor(selectedIndex / 8) };
   const selectedPiece = boardState[selectedIndex];
 
   if (selectedPiece.type === "P") {
-    if (x === selectedX) {
+    if (x === selected.x) {
       if (selectedPiece.color === "white") {
-        if (selectedY === 6 && y === 4) {
+        if (selected.y === 6 && y === 4) {
           return true;
         }
-        return selectedY - y === 1;
+        return selected.y - y === 1;
       }
-      if (selectedY === 1 && y === 3) {
+      if (selected.y === 1 && y === 3) {
         return true;
       }
-      return selectedY - y === -1;
+      return selected.y - y === -1;
     }
     if (isTakeAction) {
       if (
         selectedPiece.color === "white" &&
-        selectedY - y === 1 &&
-        Math.abs(selectedX - x) === 1
+        selected.y - y === 1 &&
+        Math.abs(selected.x - x) === 1
       ) {
         return true;
       }
       if (
         selectedPiece.color === "black" &&
-        selectedY - y === -1 &&
-        Math.abs(selectedX - x) === 1
+        selected.y - y === -1 &&
+        Math.abs(selected.x - x) === 1
       ) {
         return true;
       }
@@ -51,22 +54,22 @@ const inMoveRange = ({
   }
 
   if (selectedPiece.type === "N") {
-    if (Math.abs(selectedY - y) === 1 && Math.abs(selectedX - x) === 2) {
+    if (Math.abs(selected.y - y) === 1 && Math.abs(selected.x - x) === 2) {
       return true;
     }
-    if (Math.abs(selectedY - y) === 2 && Math.abs(selectedX - x) === 1) {
+    if (Math.abs(selected.y - y) === 2 && Math.abs(selected.x - x) === 1) {
       return true;
     }
   }
 
   if (selectedPiece.type === "K") {
-    if (Math.abs(selectedY - y) <= 1 && Math.abs(selectedX - x) <= 1) {
+    if (Math.abs(selected.y - y) <= 1 && Math.abs(selected.x - x) <= 1) {
       return true;
     }
   }
 
   if (selectedPiece.type === "B" || selectedPiece.type === "Q") {
-    if (Math.abs(selectedY - y) === Math.abs(selectedX - x)) {
+    if (checkDiagonalAlignment(x, y, selected.x, selected.y)) {
       return checkCollision({
         boardState,
         selectedIndex,
@@ -78,7 +81,7 @@ const inMoveRange = ({
   }
 
   if (selectedPiece.type === "R" || selectedPiece.type === "Q") {
-    if (Math.abs(selectedY - y) === 0 || Math.abs(selectedX - x) === 0) {
+    if (checkCardinalAlignment(x, y, selected.x, selected.y)) {
       return checkCollision({
         boardState,
         selectedIndex,

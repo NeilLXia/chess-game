@@ -13,21 +13,20 @@ const checkCollision = ({
   y,
   isTakeAction,
 }: checkCollisionProps) => {
-  let selectedX = selectedIndex % 8;
-  let selectedY = Math.floor(selectedIndex / 8);
-  const directionX =
-    x - selectedX ? (x - selectedX) / Math.abs(x - selectedX) : 0;
-  const directionY =
-    y - selectedY ? (y - selectedY) / Math.abs(y - selectedY) : 0;
-  selectedX += directionX;
-  selectedY += directionY;
+  const selected = { x: selectedIndex % 8, y: Math.floor(selectedIndex / 8) };
+  const direction = {
+    x: x - selected.x ? (x - selected.x) / Math.abs(x - selected.x) : 0,
+    y: y - selected.y ? (y - selected.y) / Math.abs(y - selected.y) : 0,
+  };
+  selected.x += direction.x;
+  selected.y += direction.y;
 
-  while (selectedX !== x || selectedY !== y) {
-    if (boardState[selectedX + 8 * selectedY].type !== "") {
+  while (selected.x !== x || selected.y !== y) {
+    if (boardState[selected.x + 8 * selected.y].type !== "") {
       return false;
     }
-    selectedX += directionX;
-    selectedY += directionY;
+    selected.x += direction.x;
+    selected.y += direction.y;
   }
 
   if (!isTakeAction && boardState[x + 8 * y].type !== "") {
