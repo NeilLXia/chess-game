@@ -1,28 +1,46 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { UserContext, BoardContext } from "../contexts/userContext";
-import ChessPiece from "./chesstile";
-import determineSquareState from "../lib/determineSquareState";
+import { UserContext } from "../contexts/userContext";
+import ChessSquare from "./chessSquare";
 
-const Chessboard = () => {
-  const [boardState, setBoardState] = useContext(BoardContext);
+const ChessBoard = ({ moves }: any) => {
+  const [userState, setUserState] = useContext(UserContext);
 
-  const squareLocations = Array.from(Array(64).keys()).map((index) => {
-    const x = index % 8;
-    const y = Math.floor(index / 8);
-    const color = (x + y) % 2 ? "black" : "white";
-    const state = determineSquareState({ boardState, color, x, y });
-    return { color, x, y, state };
-  });
+  // render 8 x 8 square grid and mark them as either black or white
+  const squares = Array.from(Array(64).keys()).map(
+    (piece: number, index: number) => {
+      const squareColor =
+        ((index % 8) + Math.floor(index / 8)) % 2 ? "black" : "white";
+
+      const noSelectionColor = moves[index] ? "blue" : "";
+      const pieceSelectedColor =
+        index === userState.firstSelection
+          ? "grey"
+          : moves[userState.firstSelection]?.attackRange.has(index)
+          ? "red"
+          : moves[userState.firstSelection]?.moveRange.has(index)
+          ? "blue"
+          : "";
+      const overlayColor =
+        userState.firstSelection !== -1 ? pieceSelectedColor : noSelectionColor;
+      return { index, squareColor, overlayColor };
+    }
+  );
 
   return (
     <div className="chessboard">
-      {squareLocations.map((square) => (
-        <ChessPiece key={`${square.x}, ${square.y}`} square={square} />
-      ))}
+      {squares.map(
+        (square: {
+          index: number;
+          squareColor: string;
+          overlayColor: string;
+        }) => (
+          <ChessSquare key={`${square.index}`} square={square} />
+        )
+      )}
     </div>
   );
 };
 
-export default Chessboard;
+export default ChessBoard;
