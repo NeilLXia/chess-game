@@ -32,7 +32,15 @@ const App = () => {
 
   // game handler
   useEffect(() => {
-    setMoves(() => findMovablePieces(boardState, userState, history));
+    setMoves(() => {
+      const newMoves = findMovablePieces(boardState, userState, history);
+      if (!Object.keys(newMoves).length) {
+        window.confirm(
+          `${userState.playerTurn === "white" ? "White" : "Black"} wins!`
+        );
+      }
+      return newMoves;
+    });
     if (userState.secondSelection !== -1) {
       const [indexFrom, indexTo] = [
         userState.firstSelection,
