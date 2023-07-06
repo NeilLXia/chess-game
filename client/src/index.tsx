@@ -13,6 +13,7 @@ import initialBoardState from "./lib/initialBoardState";
 import ChessBoard from "./components/chessboard";
 import findMovablePieces from "./lib/findMovablePieces";
 import simulateBoardMove from "./lib/simulateBoardMove";
+import { pieceToNumber } from "./lib/pieceTypes";
 
 const App = () => {
   const [boardState, setBoardState] = useState(initialBoardState);
@@ -58,15 +59,41 @@ const App = () => {
       setBoardState((prevState) => {
         const newBoardState = simulateBoardMove(prevState, indexFrom, indexTo);
 
+        // check for pawn promotion
+        const isPawnReachEnd =
+          prevState[indexFrom] ===
+            (userState.playerTurn === "white" ? 1 : 11) &&
+          Math.floor(indexTo / 8) ===
+            (userState.playerTurn === "white" ? 0 : 7);
+
+        if (isPawnReachEnd) {
+          let promoSelection = "";
+          const validPromos = new Set(["Q", "R", "B", "N"]);
+
+          while (!validPromos.has(promoSelection)) {
+            promoSelection = window.prompt(
+              "Promote to which piece? Please select from: Q, R, B, N.",
+              "Q"
+            );
+            if (!validPromos.has(promoSelection)) {
+              window.alert("Invalid choice");
+            }
+          }
+
+          newBoardState[indexTo] = isPawnReachEnd
+            ? pieceToNumber[promoSelection][userState.playerTurn]
+            : newBoardState[indexTo];
+        }
+
         // check for castling moves
         const queenCastleRook = userState.playerTurn === "white" ? 56 : 0;
         const kingCastleRook = userState.playerTurn === "white" ? 63 : 7;
-        const isPlayerKingMoveTwo =
+        const isKingMoveTwo =
           prevState[indexFrom] ===
             (userState.playerTurn === "white" ? 0 : 10) &&
           Math.abs(indexFrom - indexTo) === 2;
 
-        const castlingBoardState = isPlayerKingMoveTwo
+        const castlingBoardState = isKingMoveTwo
           ? indexTo - indexFrom > 0
             ? simulateBoardMove(newBoardState, kingCastleRook, indexTo - 1)
             : simulateBoardMove(newBoardState, queenCastleRook, indexTo + 1)
