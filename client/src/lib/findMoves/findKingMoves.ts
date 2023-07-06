@@ -1,5 +1,6 @@
 import checkBoardState from "../checkBoardState";
 import checkAdjacentCollision from "../checkCollisions/checkAdjacentCollision";
+import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
 
@@ -38,6 +39,61 @@ const findKingMoves = (
       move.attackRange.add(collision);
     }
   });
+
+  // check for castling moves
+  const orthogonalMoves = [
+    { x: 1, y: 0 },
+    { x: -1, y: 0 },
+  ];
+
+  for (const orthogonalMove of orthogonalMoves) {
+    const { validMoves, collisions } = checkLinearCollision(
+      boardState,
+      index,
+      orthogonalMove,
+      [pieceToNumber["R"][playerColor]]
+    );
+    const queenCastleRook = playerColor === "white" ? 56 : 0;
+    const kingCastleRook = playerColor === "white" ? 63 : 7;
+
+    if (
+      collisions.has(queenCastleRook) &&
+      userState.canCastle[playerColor][queenCastleRook]
+    ) {
+      if (
+        checkBoardState({ boardState, userState }) &&
+        checkBoardState({
+          boardState: simulateBoardMove(boardState, index, index - 1),
+          userState,
+        }) &&
+        checkBoardState({
+          boardState: simulateBoardMove(boardState, index, index - 2),
+          userState,
+        })
+      ) {
+        move.moveRange.add(index - 2);
+      }
+    }
+
+    if (
+      collisions.has(kingCastleRook) &&
+      userState.canCastle[playerColor][kingCastleRook]
+    ) {
+      if (
+        checkBoardState({ boardState, userState }) &&
+        checkBoardState({
+          boardState: simulateBoardMove(boardState, index, index + 1),
+          userState,
+        }) &&
+        checkBoardState({
+          boardState: simulateBoardMove(boardState, index, index + 2),
+          userState,
+        })
+      ) {
+        move.moveRange.add(index + 2);
+      }
+    }
+  }
 
   if (move.moveRange.size > 0 || move.attackRange.size > 0) {
     return move;

@@ -8,7 +8,8 @@ import findKingMoves from "./findMoves/findKingMoves";
 
 const findMovablePieces = (
   boardState: Array<number>,
-  userState: { [key: string]: any }
+  userState: { [key: string]: any },
+  history: Array<Array<number>>
 ) => {
   const moves = {} as { [key: number]: any };
   const playerColor = userState.playerTurn;
@@ -17,7 +18,7 @@ const findMovablePieces = (
     const piece = boardState[i];
 
     if (piece === pieceToNumber["P"][playerColor]) {
-      const move = findPawnMoves(boardState, userState, i);
+      const move = findPawnMoves(boardState, userState, history, i);
       if (move) {
         moves[i] = move;
       }
