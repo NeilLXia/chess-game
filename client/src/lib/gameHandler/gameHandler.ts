@@ -1,4 +1,5 @@
 import findMovablePieces from "./findMovablePieces";
+import HistoryNode from "./historyNode";
 import { pieceToNumber } from "./pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
 
@@ -11,10 +12,7 @@ const gameHandler = (
     userState,
     setUserState,
   }: { userState: { [key: string]: any }; setUserState: Function },
-  {
-    history,
-    setHistory,
-  }: { history: Array<{ [key: string]: any }>; setHistory: Function },
+  { history, setHistory }: { history: Set<HistoryNode>; setHistory: Function },
   setMoves: Function,
   timer: { white: any; black: any }
 ) => {
@@ -131,21 +129,29 @@ const gameHandler = (
         : castlingBoardState || newBoardState;
 
       // add move to history
-      setHistory((prevState: Array<Array<number>>) => [
-        ...prevState,
-        finalBoardState,
-      ]);
+      setHistory((prevState: Set<HistoryNode>) => {
+        const newNode = new HistoryNode(finalBoardState, timer);
+        newNode.parent = userState.currentNode;
+        userState.currentNode.children.add(newNode);
 
-      // switch player turn
-      setUserState((prevState: { [key: string]: any }) => {
-        const newUserState = { ...prevState };
-        newUserState.playerTurn =
-          newUserState.playerTurn === "white" ? "black" : "white";
+        // switch player turn
+        setUserState((prevState: { [key: string]: any }) => {
+          const newUserState = { ...prevState };
+          newUserState.currentNode = newNode;
+          newUserState.playerTurn =
+            newUserState.playerTurn === "white" ? "black" : "white";
 
-        // determine new moves available for next player
-        setMoves(() => findMovablePieces(newBoardState, newUserState, history));
-        return newUserState;
+          // determine new moves available for next player
+          setMoves(() =>
+            findMovablePieces(newBoardState, newUserState, history)
+          );
+          return newUserState;
+        });
+
+        prevState.add(newNode);
+        return prevState;
       });
+
       return finalBoardState;
     });
   }

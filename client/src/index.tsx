@@ -12,8 +12,9 @@ import {
 import initialBoardState from "./lib/gameHandler/initialBoardState";
 import ChessBoard from "./components/chessBoard";
 import gameHandler from "./lib/gameHandler/gameHandler";
-import Timer from "./components/timer";
 import { useTimer } from "react-timer-hook";
+import Header from "./components/header";
+import HistoryNode from "./lib/gameHandler/historyNode";
 
 const App = () => {
   const playerTimer = new Date().getTime() + 5 * 60000;
@@ -24,6 +25,7 @@ const App = () => {
     prevSelection: -1,
     firstSelection: -1,
     secondSelection: -1,
+    currentNode: null,
     timeExpire: "",
     playerTurn: "white",
     canCastle: {
@@ -50,15 +52,15 @@ const App = () => {
   };
 
   // set the first history state to the board's initial state
-  const [history, setHistory] = useState([
-    {
-      boardState,
-      timer: {
-        white: timer.white.seconds + 60 * timer.white.minutes,
-        black: timer.black.seconds + 60 * timer.black.minutes,
-      },
-    },
-  ]);
+  const [history, setHistory] = useState(() => {
+    const currentNode = new HistoryNode(boardState, timer);
+    const historySet = new Set() as Set<HistoryNode>;
+    historySet.add(currentNode);
+    setUserState((prevState) => {
+      return { ...prevState, currentNode };
+    });
+    return historySet;
+  });
 
   useEffect(
     () =>
@@ -76,39 +78,12 @@ const App = () => {
 
   return (
     <div id="app">
-      <div className="game-title">CHESS</div>
+      <div className="game-title"></div>
       <HistoryContext.Provider value={[history, setHistory]}>
         <BoardContext.Provider value={[boardState, setBoardState]}>
           <UserContext.Provider value={[userState, setUserState]}>
             <div className="game-display">
-              <div className="header">
-                <div
-                  className={`player-info ${
-                    timer.white.isRunning ? "player-info-highlight" : ""
-                  }`}
-                  id="player-1"
-                >
-                  <div className="player-name">White Player</div>
-                  <Timer
-                    seconds={timer.white.seconds}
-                    minutes={timer.white.minutes}
-                    isRunning={timer.white.isRunning}
-                  />
-                </div>
-                <div
-                  className={`player-info ${
-                    timer.black.isRunning ? "player-info-highlight" : ""
-                  }`}
-                  id="player-2"
-                >
-                  <div className="player-name">Black Player</div>
-                  <Timer
-                    seconds={timer.black.seconds}
-                    minutes={timer.black.minutes}
-                    isRunning={timer.black.isRunning}
-                  />
-                </div>
-              </div>
+              <Header timer={timer} />
               <ChessBoard moves={moves} />
             </div>
             <div className="history-display">history/moves here!</div>

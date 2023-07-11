@@ -5,11 +5,12 @@ import findBishopMoves from "./findMoves/findBishopMoves";
 import findRookMoves from "./findMoves/findRookMoves";
 import findQueenMoves from "./findMoves/findQueenMoves";
 import findKingMoves from "./findMoves/findKingMoves";
+import HistoryNode from "./historyNode";
 
 const findMovablePieces = (
   boardState: Array<number>,
   userState: { [key: string]: any },
-  history: Array<{ [key: string]: any }>
+  history: Set<HistoryNode>
 ) => {
   const moves = {} as { [key: number]: any };
   const playerColor = userState.playerTurn;
