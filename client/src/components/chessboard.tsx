@@ -22,6 +22,8 @@ const ChessBoard = ({ moves }: any) => {
           : moves[userState.firstSelection]?.moveRange.has(index)
           ? "blue"
           : "";
+      const prevSelectionColor =
+        index === userState.prevSelection ? "yellow" : "";
       const overlayColor =
         userState.firstSelection !== -1 ? pieceSelectedColor : noSelectionColor;
       return { index, squareColor, overlayColor };

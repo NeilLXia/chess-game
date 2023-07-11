@@ -31,12 +31,12 @@ const checkAdjacentCollision = (
       const checkPiece = boardState[checkLoc.x + 8 * checkLoc.y];
 
       // if the space is empty, accept valid move
-      if (checkPiece === -1) {
+      if (checkPiece < 0) {
         validMoves.add(checkLoc.x + 8 * checkLoc.y);
       }
 
       // if the space has a target piece, return collision
-      if (targetPiece.indexOf(checkPiece) !== -1) {
+      if (targetPiece.indexOf(checkPiece) >= 0) {
         collisions.add(checkLoc.x + 8 * checkLoc.y);
       }
     }

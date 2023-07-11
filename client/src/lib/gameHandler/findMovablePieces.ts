@@ -9,7 +9,7 @@ import findKingMoves from "./findMoves/findKingMoves";
 const findMovablePieces = (
   boardState: Array<number>,
   userState: { [key: string]: any },
-  history: Array<Array<number>>
+  history: Array<{ [key: string]: any }>
 ) => {
   const moves = {} as { [key: number]: any };
   const playerColor = userState.playerTurn;

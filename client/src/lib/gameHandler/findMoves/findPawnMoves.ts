@@ -7,7 +7,7 @@ import simulateBoardMove from "../simulateBoardMove";
 const findPawnMoves = (
   boardState: Array<number>,
   userState: { [key: string]: any },
-  history: Array<Array<number>>,
+  history: Array<{ [key: string]: any }>,
   index: number
 ) => {
   const playerColor = userState.playerTurn;
@@ -90,19 +90,19 @@ const findPawnMoves = (
       : history[history.length - 1];
   if (
     boardState[index - 1] === pieceToNumber["P"][opponentColor] &&
-    boardState[index - 1 + 2 * oneRowForward] === -1 &&
+    boardState[index - 1 + 2 * oneRowForward] < 0 &&
     priorBoardState[index - 1 + 2 * oneRowForward] ===
       pieceToNumber["P"][opponentColor] &&
-    priorBoardState[index - 1] === -1
+    priorBoardState[index - 1] < 0
   ) {
     move.attackRange.add(index - 1 + oneRowForward);
   }
   if (
     boardState[index + 1] === pieceToNumber["P"][opponentColor] &&
-    boardState[index + 1 + 2 * oneRowForward] === -1 &&
+    boardState[index + 1 + 2 * oneRowForward] < 0 &&
     priorBoardState[index + 1 + 2 * oneRowForward] ===
       pieceToNumber["P"][opponentColor] &&
-    priorBoardState[index + 1] === -1
+    priorBoardState[index + 1] < 0
   ) {
     move.attackRange.add(index + 1 + oneRowForward);
   }

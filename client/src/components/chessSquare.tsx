@@ -2,7 +2,7 @@ import * as React from "react";
 import { useContext } from "react";
 
 import { UserContext, BoardContext } from "../contexts/userContext";
-import { numberToPiece } from "../lib/pieceTypes";
+import { numberToPiece, numberToUnicode } from "../lib/gameHandler/pieceTypes";
 
 interface ChessSquareProps {
   square: {
@@ -19,7 +19,7 @@ const ChessSquare = ({ square }: ChessSquareProps) => {
 
   const { index, squareColor, overlayColor } = square;
   const piece = boardState[index];
-  const pieceType = numberToPiece[piece];
+  const pieceType = numberToUnicode[piece];
 
   const pieceStyles = `board-piece ${
     piece >= 10 ? "black-piece" : piece >= 0 ? "white-piece" : ""
@@ -30,7 +30,7 @@ const ChessSquare = ({ square }: ChessSquareProps) => {
     overlayColor === "blue" ? "overlay-blue" : ""
   } ${overlayColor === "red" ? "overlay-red" : ""} ${
     overlayColor === "grey" ? "overlay-grey" : ""
-  }`;
+  } ${overlayColor === "yellow" ? "overlay-yellow" : ""}`;
 
   return (
     <div

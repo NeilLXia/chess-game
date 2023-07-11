@@ -29,11 +29,11 @@ const checkKnightCollision = (
       const checkPiece = boardState[checkLoc.x + 8 * checkLoc.y];
 
       // if the checked piece is a target piece OR if the check piece is a piece and target piece was left blank
-      if (checkPiece === -1) {
+      if (checkPiece < 0) {
         validMoves.add(checkLoc.x + 8 * checkLoc.y);
         return;
       }
-      if (targetPiece.indexOf(checkPiece) !== -1) {
+      if (targetPiece.indexOf(checkPiece) >= 0) {
         collisions.add(checkLoc.x + 8 * checkLoc.y);
       }
     }

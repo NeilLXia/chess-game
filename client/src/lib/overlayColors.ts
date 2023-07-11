@@ -7,6 +7,8 @@ const overlayColors = (state: string) => {
     return "overlay overlay-red";
   } else if (state === "movePiece") {
     return "overlay overlay-blue";
+  } else if (state === "prevMove") {
+    return "overlay overlay-yellow";
   } else {
     return "overlay";
   }

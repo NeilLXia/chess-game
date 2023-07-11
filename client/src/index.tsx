@@ -9,18 +9,22 @@ import {
   BoardContext,
   HistoryContext,
 } from "./contexts/userContext";
-import initialBoardState from "./lib/initialBoardState";
-import ChessBoard from "./components/chessboard";
-import findMovablePieces from "./lib/findMovablePieces";
-import simulateBoardMove from "./lib/simulateBoardMove";
-import { pieceToNumber } from "./lib/pieceTypes";
+import initialBoardState from "./lib/gameHandler/initialBoardState";
+import ChessBoard from "./components/chessBoard";
+import gameHandler from "./lib/gameHandler/gameHandler";
+import Timer from "./components/timer";
+import { useTimer } from "react-timer-hook";
 
 const App = () => {
+  const playerTimer = new Date().getTime() + 5 * 60000;
+
   const [boardState, setBoardState] = useState(initialBoardState);
   const [moves, setMoves] = useState({});
   const [userState, setUserState] = useState({
+    prevSelection: -1,
     firstSelection: -1,
     secondSelection: -1,
+    timeExpire: "",
     playerTurn: "white",
     canCastle: {
       black: { 0: true, 7: true },
@@ -28,124 +32,86 @@ const App = () => {
     } as { [key: string]: { [key: string]: boolean } },
   });
 
-  // set the first history state to the board's initial state
-  const [history, setHistory] = useState([boardState]);
-
-  // game handler
-  useEffect(() => {
-    setMoves(() => {
-      const newMoves = findMovablePieces(boardState, userState, history);
-      if (!Object.keys(newMoves).length) {
-        window.confirm(
-          `${userState.playerTurn === "white" ? "White" : "Black"} wins!`
-        );
-      }
-      return newMoves;
-    });
-    if (userState.secondSelection !== -1) {
-      const [indexFrom, indexTo] = [
-        userState.firstSelection,
-        userState.secondSelection,
-      ];
-
-      [userState.firstSelection, userState.secondSelection] = [-1, -1];
-
-      //cancel selection if selected piece is clicked
-      if (indexTo === indexFrom) {
-        return;
-      }
-
-      // update board state to reflect valid move
-      setBoardState((prevState) => {
-        const newBoardState = simulateBoardMove(prevState, indexFrom, indexTo);
-
-        // check for pawn promotion
-        const isPawnReachEnd =
-          prevState[indexFrom] ===
-            (userState.playerTurn === "white" ? 1 : 11) &&
-          Math.floor(indexTo / 8) ===
-            (userState.playerTurn === "white" ? 0 : 7);
-
-        if (isPawnReachEnd) {
-          let promoSelection = "";
-          const validPromos = new Set(["Q", "R", "B", "N"]);
-
-          while (!validPromos.has(promoSelection)) {
-            promoSelection = window.prompt(
-              "Promote to which piece? Please select from: Q, R, B, N.",
-              "Q"
-            );
-            if (!validPromos.has(promoSelection)) {
-              window.alert("Invalid choice");
-            }
-          }
-
-          newBoardState[indexTo] = isPawnReachEnd
-            ? pieceToNumber[promoSelection][userState.playerTurn]
-            : newBoardState[indexTo];
-        }
-
-        // check for castling moves
-        const queenCastleRook = userState.playerTurn === "white" ? 56 : 0;
-        const kingCastleRook = userState.playerTurn === "white" ? 63 : 7;
-        const isKingMoveTwo =
-          prevState[indexFrom] ===
-            (userState.playerTurn === "white" ? 0 : 10) &&
-          Math.abs(indexFrom - indexTo) === 2;
-
-        const castlingBoardState = isKingMoveTwo
-          ? indexTo - indexFrom > 0
-            ? simulateBoardMove(newBoardState, kingCastleRook, indexTo - 1)
-            : simulateBoardMove(newBoardState, queenCastleRook, indexTo + 1)
-          : null;
-        if (castlingBoardState) {
-          userState.canCastle[userState.playerTurn][kingCastleRook] = false;
-          userState.canCastle[userState.playerTurn][queenCastleRook] = false;
-        }
-
-        // check for en passant
-        const oneRowForward = userState.playerTurn === "white" ? -8 : 8;
-        const isPawnAttackingEmpty =
-          prevState[indexFrom] ===
-            (userState.playerTurn === "white" ? 1 : 11) &&
-          prevState[indexTo] === -1 &&
-          (Math.abs(indexTo - indexFrom) === 7 ||
-            Math.abs(indexTo - indexFrom) === 9);
-
-        const enPassantBoardState = isPawnAttackingEmpty
-          ? simulateBoardMove(newBoardState, -1, indexTo - oneRowForward)
-          : null;
-
-        const finalBoardState = enPassantBoardState
-          ? enPassantBoardState
-          : castlingBoardState || newBoardState;
-
-        // add move to history
-        setHistory((prevState) => [...prevState, finalBoardState]);
-
-        // switch player turn
+  const timer = {
+    white: useTimer({
+      expiryTimestamp: new Date(playerTimer),
+      onExpire: () =>
         setUserState((prevState) => {
-          const newUserState = { ...prevState };
-          newUserState.playerTurn =
-            newUserState.playerTurn === "white" ? "black" : "white";
+          return { ...prevState, timeExpire: "white" };
+        }),
+    }),
+    black: useTimer({
+      expiryTimestamp: new Date(playerTimer),
+      onExpire: () =>
+        setUserState((prevState) => {
+          return { ...prevState, timeExpire: "black" };
+        }),
+    }),
+  };
 
-          // determine new moves available for next player
-          setMoves(() =>
-            findMovablePieces(newBoardState, newUserState, history)
-          );
-          return newUserState;
-        });
-        return finalBoardState;
-      });
-    }
-  }, [userState]);
+  // set the first history state to the board's initial state
+  const [history, setHistory] = useState([
+    {
+      boardState,
+      timer: {
+        white: timer.white.seconds + 60 * timer.white.minutes,
+        black: timer.black.seconds + 60 * timer.black.minutes,
+      },
+    },
+  ]);
+
+  useEffect(
+    () =>
+      gameHandler(
+        { boardState, setBoardState },
+        { userState, setUserState },
+        { history, setHistory },
+        setMoves,
+        timer
+      ),
+    [userState]
+  );
+
+  const time = new Date();
 
   return (
     <div id="app">
+      <div className="game-title">CHESS</div>
       <HistoryContext.Provider value={[history, setHistory]}>
         <BoardContext.Provider value={[boardState, setBoardState]}>
           <UserContext.Provider value={[userState, setUserState]}>
-            <ChessBoard moves={moves} />
+            <div className="game-display">
+              <div className="header">
+                <div
+                  className={`player-info ${
+                    timer.white.isRunning ? "player-info-highlight" : ""
+                  }`}
+                  id="player-1"
+                >
+                  <div className="player-name">White Player</div>
+                  <Timer
+                    seconds={timer.white.seconds}
+                    minutes={timer.white.minutes}
+                    isRunning={timer.white.isRunning}
+                  />
+                </div>
+                <div
+                  className={`player-info ${
+                    timer.black.isRunning ? "player-info-highlight" : ""
+                  }`}
+                  id="player-2"
+                >
+                  <div className="player-name">Black Player</div>
+                  <Timer
+                    seconds={timer.black.seconds}
+                    minutes={timer.black.minutes}
+                    isRunning={timer.black.isRunning}
+                  />
+                </div>
+              </div>
+              <ChessBoard moves={moves} />
+            </div>
+            <div className="history-display">history/moves here!</div>
           </UserContext.Provider>
         </BoardContext.Provider>
       </HistoryContext.Provider>

@@ -4,7 +4,7 @@ const simulateBoardMove = (
   indexTo: number
 ) => {
   const newBoardState = [...boardState];
-  const toPieceValue = indexFrom === -1 ? -1 : newBoardState[indexFrom];
+  const toPieceValue = indexFrom < 0 ? -1 : newBoardState[indexFrom];
   [newBoardState[indexTo], newBoardState[indexFrom]] = [toPieceValue, -1];
 
   return newBoardState;

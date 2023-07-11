@@ -1,14 +1,83 @@
 #app {
+  display: grid;
+  width: max(722px, 100%);
+  height: 100%;
+  grid-template-columns: 1fr minmax(200px, 400px);
+  grid-template-rows: 80px 1fr;
+  border: 1px solid #000;
+}
+
+.game-title {
+  grid-column: 1/3;
+  padding: 20px;
+  background-color: #203025;
+  color: #eee;
+  font-size: 32px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.game-display {
+  grid-column: 1;
   display: flex;
-  flex-shrink: 1;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #354540;
+  border: 1px solid #000;
+}
+
+.header {
+  width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 0;
+  gap: 10px;
+}
+
+.player-info {
+  flex-grow: 1;
+  padding: 5px 15px;
+  background-color: #d5e5d5;
+  border: 2px solid #000;
+}
+
+#player-1 {
+  text-align: left;
+  border-top-left-radius: 20px;
+}
+
+#player-2 {
+  text-align: right;
+  border-top-right-radius: 20px;
+}
+
+.player-info-highlight {
+  background-color: #fff;
+}
+
+.player-name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.player-timer {
+  font-size: 20px;
+}
+
+.history-display {
+  grid-column: 2;
+  padding: 50px;
+  border: 1px solid #000;
 }
 
 .chessboard {
-  margin: auto;
+  margin: 0 auto;
   display: grid;
   grid-template-rows: repeat(8, 52px);
   grid-template-columns: repeat(8, 52px);
-  border: 1px solid #000;
+  border: 2px solid #000;
   box-sizing: border-box;
 }
 
@@ -27,7 +96,7 @@
   display: flex;
   height: 50px;
   width: 50px;
-  background-color: #fff;
+  background-color: #ffe;
   justify-content: center;
   align-items: center;
 }
@@ -47,26 +116,25 @@
   position: relative;
   width: 35px;
   height: 35px;
-  border: 2px solid #000;
-  border-radius: 20px;
   justify-content: center;
   align-items: center;
 }
 
 .white-piece {
   display: flex;
-  background-color: #fff;
-  color: #000;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
 }
 
 .black-piece {
   display: flex;
-  background-color: #444;
-  color: #fff;
+  color: #000;
+  text-shadow: 1px 1px 3px #fff;
 }
 
 .piece-icon {
   text-align: center;
+  font-size: 48px;
   font-weight: bold;
 }
 
@@ -77,11 +145,14 @@
 }
 
 .overlay-blue {
-  background-color: rgba(100, 100, 255, 0.75);
+  background-color: rgba(0, 150, 255, 0.5);
 }
 .overlay-red {
-  background-color: rgba(255, 100, 100, 0.75);
+  background-color: rgba(255, 100, 100, 0.6);
+}
+.overlay-yellow {
+  background-color: rgba(255, 255, 100, 0.5);
 }
 .overlay-grey {
-  background-color: rgba(100, 100, 100, 0.75);
+  background-color: rgba(100, 100, 100, 0.5);
 }
