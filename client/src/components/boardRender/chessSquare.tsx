@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { UserContext, BoardContext } from "../contexts/userContext";
-import { numberToPiece, numberToUnicode } from "../lib/gameHandler/pieceTypes";
+import { UserContext, BoardContext } from "../../contexts/userContext";
+import { numberToUnicode } from "../../lib/gameHandler/pieceTypes";
 
 interface ChessSquareProps {
   square: {
@@ -36,8 +36,8 @@ const ChessSquare = ({ square }: ChessSquareProps) => {
     <div
       className="board-square"
       onClick={() => {
-        // store selection in state if player clicks on a highlighted square
-        if (overlayColor !== "") {
+        // store selection in state if player clicks on a highlighted square (not yellow)
+        if (overlayColor !== "" && overlayColor !== "yellow") {
           setUserState((prevState: any) => {
             if (prevState.firstSelection === -1) {
               return { ...prevState, firstSelection: index };

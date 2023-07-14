@@ -1,6 +1,7 @@
+import { MutableRefObject } from "react";
 import findMovablePieces from "./findMovablePieces";
 import HistoryNode from "./historyNode";
-import { pieceToNumber } from "./pieceTypes";
+import { numberToPiece, pieceToNumber } from "./pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
 
 const gameHandler = (
@@ -13,11 +14,13 @@ const gameHandler = (
     setUserState,
   }: { userState: { [key: string]: any }; setUserState: Function },
   { history, setHistory }: { history: Set<HistoryNode>; setHistory: Function },
+  promoModalRef: MutableRefObject<HTMLDialogElement>,
+  gameEndModalRef: MutableRefObject<HTMLDialogElement>,
   setMoves: Function,
   timer: { white: any; black: any }
 ) => {
   // start and stop timers based on player turn
-  if (userState.playerTurn === "white" && userState.timeExpire === "") {
+  if (userState.playerTurn === "white" && userState.gameWinner === "") {
     timer.white.resume();
     timer.black.pause();
   } else {
@@ -25,35 +28,53 @@ const gameHandler = (
     timer.white.pause();
   }
 
+  // find moves for player and disable moves if there is a game winner
   setMoves(() => {
-    const newMoves = findMovablePieces(boardState, userState, history);
+    const newMoves = findMovablePieces(boardState, userState);
 
-    if (!Object.keys(newMoves).length) {
+    if (!Object.keys(newMoves).length || userState.gameWinner !== "") {
+      // if win by checkmate (no valid moves for opponent), set game winner
+      if (userState.gameWinner === "") {
+        setUserState((prevState: { [key: string]: any }) => {
+          return {
+            ...prevState,
+            gameWinner: prevState.playerTurn == "white" ? "Black" : "White",
+          };
+        });
+      }
       // if no more valid moves, the king is in checkmate. declare the winner and show history
-      window.confirm(
-        `${userState.playerTurn === "white" ? "Black" : "White"} wins!`
-      );
+      if (!gameEndModalRef.current.open) {
+        gameEndModalRef.current.showModal();
+      }
       timer.white.pause();
       timer.black.pause();
-      console.log(history);
-    } else if (userState.timeExpire !== "") {
-      // if the timer runs out, declare the winner and show history
-      window.confirm(
-        `${userState.timeExpire === "white" ? "Black" : "White"} wins!`
-      );
-      timer.white.pause();
-      timer.black.pause();
-      console.log(history);
       return {};
     }
+
     return newMoves;
   });
 
+  // player has clicked two valid selections (e.g. a piece and where to move)
   if (userState.secondSelection !== -1) {
     const [indexFrom, indexTo] = [
       userState.firstSelection,
       userState.secondSelection,
     ];
+
+    const isPawnReachEnd =
+      boardState[indexFrom] === (userState.playerTurn === "white" ? 1 : 11) &&
+      Math.floor(indexTo / 8) === (userState.playerTurn === "white" ? 0 : 7);
+
+    // check for pawn promotion and prompt the user for a promotion piece.
+    if (isPawnReachEnd && userState.promoValue === "") {
+      if (!promoModalRef.current.open) {
+        promoModalRef.current.showModal();
+        setUserState((prevState: { [key: string]: any }) => {
+          return { ...prevState, isPromo: true };
+        });
+      }
+      return;
+    }
 
     [userState.firstSelection, userState.secondSelection] = [-1, -1];
 
@@ -63,41 +84,59 @@ const gameHandler = (
     }
 
     setUserState((prevState: { [key: string]: any }) => {
-      return { ...prevState, prevSelection: indexFrom };
+      return { ...prevState, prevSelection: [indexFrom, indexTo] };
     });
 
     // update board state to reflect valid move
     setBoardState((prevState: Array<number>) => {
       const newBoardState = simulateBoardMove(prevState, indexFrom, indexTo);
 
-      // check for pawn promotion and prompt the user for a promotion piece.
-      const isPawnReachEnd =
-        prevState[indexFrom] === (userState.playerTurn === "white" ? 1 : 11) &&
-        Math.floor(indexTo / 8) === (userState.playerTurn === "white" ? 0 : 7);
-
-      if (isPawnReachEnd) {
-        let promoSelection = "";
-        const validPromos = new Set(["Q", "R", "B", "N"]);
-
-        while (!validPromos.has(promoSelection)) {
-          promoSelection = window.prompt(
-            "Promote to which piece? Please select from: Q, R, B, N.",
-            "Q"
-          );
-          if (!validPromos.has(promoSelection)) {
-            window.alert("Invalid choice");
-          }
-        }
-
+      // check for pawn promotion and set new board state.
+      if (userState.isPromo) {
         newBoardState[indexTo] = isPawnReachEnd
-          ? pieceToNumber[promoSelection][userState.playerTurn]
+          ? pieceToNumber[userState.promoValue][userState.playerTurn]
           : newBoardState[indexTo];
+        setUserState((prevState: { [key: string]: any }) => {
+          return { ...prevState, isPromo: false, promoValue: "" };
+        });
       }
 
-      // check for castling moves. if king moves 2 squares, it's a castle move.
       const queenCastleRook = userState.playerTurn === "white" ? 56 : 0;
       const kingCastleRook = userState.playerTurn === "white" ? 63 : 7;
 
+      // If king or rook moves, castling is turned off.
+      if (numberToPiece[prevState[indexFrom]] === "R") {
+        if (
+          userState.canCastle[userState.playerTurn][queenCastleRook] === true &&
+          indexFrom === queenCastleRook
+        ) {
+          setUserState((prevState: { [key: string]: any }) => {
+            const newState = { ...prevState };
+            newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+            return newState;
+          });
+        }
+        if (
+          userState.canCastle[userState.playerTurn][kingCastleRook] === true &&
+          indexFrom === kingCastleRook
+        ) {
+          setUserState((prevState: { [key: string]: any }) => {
+            const newState = { ...prevState };
+            newState.canCastle[userState.playerTurn][kingCastleRook] = false;
+            return newState;
+          });
+        }
+      }
+      if (numberToPiece[prevState[indexFrom]] === "K") {
+        setUserState((prevState: { [key: string]: any }) => {
+          const newState = { ...prevState };
+          newState.canCastle[userState.playerTurn][kingCastleRook] = false;
+          newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+          return newState;
+        });
+      }
+
+      // check for castling moves. if king moves 2 squares, it's a castle move.
       const isKingMoveTwo =
         prevState[indexFrom] === (userState.playerTurn === "white" ? 0 : 10) &&
         Math.abs(indexFrom - indexTo) === 2;
@@ -108,8 +147,12 @@ const gameHandler = (
           : simulateBoardMove(newBoardState, queenCastleRook, indexTo + 1)
         : null;
       if (castlingBoardState) {
-        userState.canCastle[userState.playerTurn][kingCastleRook] = false;
-        userState.canCastle[userState.playerTurn][queenCastleRook] = false;
+        setUserState((prevState: { [key: string]: any }) => {
+          const newState = { ...prevState };
+          newState.canCastle[userState.playerTurn][kingCastleRook] = false;
+          newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+          return newState;
+        });
       }
 
       // check for en passant. if the pawn moves diagonally to an empty square, it's an en passant.
@@ -142,9 +185,7 @@ const gameHandler = (
             newUserState.playerTurn === "white" ? "black" : "white";
 
           // determine new moves available for next player
-          setMoves(() =>
-            findMovablePieces(newBoardState, newUserState, history)
-          );
+          setMoves(() => findMovablePieces(newBoardState, newUserState));
           return newUserState;
         });
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { UserContext } from "../contexts/userContext";
+import { UserContext } from "../../contexts/userContext";
 import ChessSquare from "./chessSquare";
 
 const ChessBoard = ({ moves }: any) => {
@@ -13,7 +13,12 @@ const ChessBoard = ({ moves }: any) => {
       const squareColor =
         ((index % 8) + Math.floor(index / 8)) % 2 ? "black" : "white";
 
-      const noSelectionColor = moves[index] ? "blue" : "";
+      const noSelectionColor = moves[index]
+        ? "blue"
+        : index === userState.prevSelection[0] ||
+          index === userState.prevSelection[1]
+        ? "yellow"
+        : "";
       const pieceSelectedColor =
         index === userState.firstSelection
           ? "grey"
@@ -21,9 +26,10 @@ const ChessBoard = ({ moves }: any) => {
           ? "red"
           : moves[userState.firstSelection]?.moveRange.has(index)
           ? "blue"
+          : index === userState.prevSelection[0] ||
+            index === userState.prevSelection[1]
+          ? "yellow"
           : "";
-      const prevSelectionColor =
-        index === userState.prevSelection ? "yellow" : "";
       const overlayColor =
         userState.firstSelection !== -1 ? pieceSelectedColor : noSelectionColor;
       return { index, squareColor, overlayColor };

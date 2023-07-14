@@ -5,12 +5,10 @@ import findBishopMoves from "./findMoves/findBishopMoves";
 import findRookMoves from "./findMoves/findRookMoves";
 import findQueenMoves from "./findMoves/findQueenMoves";
 import findKingMoves from "./findMoves/findKingMoves";
-import HistoryNode from "./historyNode";
 
 const findMovablePieces = (
   boardState: Array<number>,
-  userState: { [key: string]: any },
-  history: Set<HistoryNode>
+  userState: { [key: string]: any }
 ) => {
   const moves = {} as { [key: number]: any };
   const playerColor = userState.playerTurn;
@@ -19,7 +17,7 @@ const findMovablePieces = (
     const piece = boardState[i];
 
     if (piece === pieceToNumber["P"][playerColor]) {
-      const move = findPawnMoves(boardState, userState, history, i);
+      const move = findPawnMoves(boardState, userState, i);
       if (move) {
         moves[i] = move;
       }

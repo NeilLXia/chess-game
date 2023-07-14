@@ -38,3 +38,12 @@ export const numberToUnicode: { [key: string]: string } = {
   14: "\u265C",
   15: "\u265B",
 };
+
+export const pieceToUnicode: { [key: string]: string } = {
+  K: "\u265A",
+  P: "\u265F",
+  N: "\u265E",
+  B: "\u265D",
+  R: "\u265C",
+  Q: "\u265B",
+};

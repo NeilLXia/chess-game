@@ -3,12 +3,10 @@ import checkBoardState from "../checkBoardState";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
-import HistoryNode from "../historyNode";
 
 const findPawnMoves = (
   boardState: Array<number>,
   userState: { [key: string]: any },
-  history: Set<HistoryNode>,
   index: number
 ) => {
   const playerColor = userState.playerTurn;
@@ -85,26 +83,21 @@ const findPawnMoves = (
 
   // check en passant opportunities
   const oneRowForward = playerColor === "white" ? -8 : 8;
-  const priorBoardState = userState.currentNode.parent
-    ? userState.currentNode.parent.boardState
-    : userState.currentNode.boardState;
 
   if (
-    boardState[index - 1] === pieceToNumber["P"][opponentColor] &&
-    boardState[index - 1 + 2 * oneRowForward] < 0 &&
-    priorBoardState[index - 1 + 2 * oneRowForward] ===
+    index - 1 === userState.prevSelection[1] &&
+    boardState[userState.prevSelection[1]] ===
       pieceToNumber["P"][opponentColor] &&
-    priorBoardState[index - 1] < 0
+    Math.abs(userState.prevSelection[1] - userState.prevSelection[0]) / 8 === 2
   ) {
     move.attackRange.add(index - 1 + oneRowForward);
   }
 
   if (
-    boardState[index + 1] === pieceToNumber["P"][opponentColor] &&
-    boardState[index + 1 + 2 * oneRowForward] < 0 &&
-    priorBoardState[index + 1 + 2 * oneRowForward] ===
+    index + 1 === userState.prevSelection[1] &&
+    boardState[userState.prevSelection[1]] ===
       pieceToNumber["P"][opponentColor] &&
-    priorBoardState[index + 1] < 0
+    Math.abs(userState.prevSelection[1] - userState.prevSelection[0]) / 8 === 2
   ) {
     move.attackRange.add(index + 1 + oneRowForward);
   }
