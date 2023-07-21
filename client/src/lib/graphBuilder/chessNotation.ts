@@ -34,10 +34,19 @@ const chessNotation = (
   });
   const isCheckmate =
     Object.keys(findMovablePieces(boardState, userState)).length === 0;
-
-  return `${piece === "P" ? "" : piece}${indexFrom}${
+  const isKingCastle =
+    numberToPiece[boardState[userState.prevSecondSelection]] === "K" &&
+    userState.prevSecondSelection - userState.prevFirstSelection === 2;
+  const isQueenCastle =
+    numberToPiece[boardState[userState.prevSecondSelection]] === "K" &&
+    userState.prevSecondSelection - userState.prevFirstSelection === -2;
+  const moveString = `${piece === "P" ? "" : piece}${indexFrom}${
     isCaptureMove ? "x" : ""
-  }${indexTo}${isCheckmate ? "#" : isCheck ? "+" : ""}`;
+  }${indexTo}`;
+
+  return `${isKingCastle ? "0-0" : isQueenCastle ? "0-0-0" : moveString}${
+    isCheckmate ? "#" : isCheck ? "+" : ""
+  }`;
 };
 
 export default chessNotation;

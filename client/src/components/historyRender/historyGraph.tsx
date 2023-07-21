@@ -78,7 +78,7 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
         cx={`${xSpacing / 2 + xSpacing * locationIndex}`}
         cy={`${ySpacing / 2 + ySpacing * node.moveNumber}`}
         r={nodeRadius}
-        fill={node.moveNumber % 2 === 0 ? "#eee" : "#222"}
+        fill={node.moveNumber % 2 !== 0 ? "#eee" : "#222"}
         stroke={node === history.get(userState.currentNode) ? "#f00" : "#fff"}
         strokeWidth="2"
         onClick={() => {
