@@ -1,9 +1,7 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import * as ReactDOM from "react-dom/client";
-
 import "./css/app.css";
-
 import {
   UserContext,
   BoardContext,
