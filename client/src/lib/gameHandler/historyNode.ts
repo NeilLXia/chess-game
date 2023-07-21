@@ -1,17 +1,32 @@
+import chessNotation from "../graphBuilder/chessNotation";
+
 class HistoryNode {
   boardState: Array<number>;
+  userState: { [key: string]: any };
   timer: { [key: string]: number };
+  moveNumber: number;
+  chessNotation: string;
   parent: HistoryNode;
   children: Set<HistoryNode>;
 
-  constructor(boardState: Array<number>, timer: { [key: string]: any }) {
-    this.boardState = boardState;
+  constructor(
+    boardState: Array<number>,
+    userState: { [key: string]: any },
+    parent: HistoryNode,
+    timer: { [key: string]: any }
+  ) {
+    this.boardState = [...boardState];
+    this.userState = { ...userState };
     this.timer = {
       white: timer.white.seconds + 60 * timer.white.minutes,
       black: timer.black.seconds + 60 * timer.black.minutes,
     };
     this.children = new Set() as Set<HistoryNode>;
-    this.parent = null;
+    this.parent = parent;
+    this.moveNumber = (parent ? parent.moveNumber : -1) + 1;
+    this.chessNotation = parent
+      ? chessNotation(boardState, userState, parent)
+      : "";
   }
 }
 

@@ -1,19 +1,19 @@
 import * as React from "react";
-import { MutableRefObject } from "react";
+import { useContext, MutableRefObject } from "react";
+import { UserContext } from "../../contexts/userContext";
 
 function GameEndDialog({
   gameEndModalRef,
-  userState,
 }: {
   gameEndModalRef: MutableRefObject<HTMLDialogElement>;
-  userState: { [key: string]: any };
 }) {
+  const [userState, setUserState] = useContext(UserContext);
   return (
-    <dialog ref={gameEndModalRef} className="promotion-dialog">
+    <dialog ref={gameEndModalRef} className="dialog">
       <div className="dialog-title">{userState.gameWinner} wins!</div>
-      <div className="promotion-list">
+      <div className="dialog-option-list">
         <button
-          className=""
+          className="dialog-button"
           onClick={() => {
             location.reload();
           }}
@@ -21,7 +21,7 @@ function GameEndDialog({
           New Game
         </button>
         <button
-          className=""
+          className="dialog-button"
           onClick={() => {
             gameEndModalRef.current.close();
           }}

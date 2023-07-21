@@ -2,8 +2,9 @@
   display: grid;
   width: max(722px, 100%);
   height: 100%;
-  grid-template-columns: 1fr minmax(200px, 400px);
+  grid-template-columns: 1fr 400px;
   grid-template-rows: 120px 1fr;
+  overflow: hidden visible;
 }
 
 .game-title {
@@ -88,20 +89,30 @@
 
 .history-display {
   grid-column: 2;
-  padding: 0 25px;
+  width: 400;
+  height: 100%;
+  padding: 25px;
   background-color: #000;
   border-left: 1px solid white;
 }
 
-.history-graph {
-  width: 100%;
-  height: 100%;
-  background-color: white;
+.graph-container {
+  width: 350;
+  height: calc(100dvh - 200px);
+  overflow: scroll;
 }
 
+.graph-label {
+  color: white;
+  font-family: "Open Sans", sans-serif;
+  border: 1px solid white;
+}
+
+/* board render */
 .chessboard {
   margin: 0 auto;
   display: grid;
+  position: relative;
   grid-template-rows: repeat(8, 52px);
   grid-template-columns: repeat(8, 52px);
   border: 2px solid white;
@@ -165,10 +176,23 @@
   font-weight: bold;
 }
 
-.overlay {
-  position: absolute;
-  height: 50px;
-  width: 50px;
+/* dialog / game pop-ups */
+.dialog {
+  z-index: 10;
+  background-color: black;
+  border: 2px solid white;
+  padding: 0;
+}
+
+.dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.promotion-dialog {
+  /* position: absolute; */
+  width: 208px;
+  flex-direction: row;
+  inset-inline-end: 500px;
 }
 
 .dialog-title {
@@ -176,27 +200,30 @@
   text-align: center;
   font-size: 18px;
   font-weight: bold;
-  padding: 0 0 20px 0;
+  padding: 20px 0 0 0;
   color: white;
 }
 
-.promotion-dialog {
-  position: fixed;
-  width: 200px;
-  z-index: 10;
-  background-color: black;
-  border: 2px solid white;
-}
-
-.promotion-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.35);
-}
-
-.promotion-list {
+.dialog-option-list {
+  margin: 20px;
   display: flex;
   flex-direction: column;
+}
+
+.dialog-button {
+  flex-grow: 1;
+  justify-content: center;
+  background-color: #ccb;
+  margin: 1px;
   border: 2px solid white;
-  padding: 2px;
+  border-radius: 10px;
+  height: 45px;
+  width: 180px;
+}
+
+.dialog-button:hover {
+  border: 2px solid red;
+  background-color: #ffe;
 }
 
 .promotion-button {
@@ -206,10 +233,18 @@
   margin: 1px;
   border: 2px solid black;
   border-radius: 10px;
-  height: 60px;
+  height: 50px;
+  width: 50px;
 }
 .promotion-button:hover {
   background-color: #ffe;
+}
+
+/* board square overlay colors to show possible moves */
+.overlay {
+  position: absolute;
+  height: 50px;
+  width: 50px;
 }
 
 .overlay-blue {

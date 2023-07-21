@@ -85,19 +85,23 @@ const findPawnMoves = (
   const oneRowForward = playerColor === "white" ? -8 : 8;
 
   if (
-    index - 1 === userState.prevSelection[1] &&
-    boardState[userState.prevSelection[1]] ===
+    index - 1 === userState.prevSecondSelection &&
+    boardState[userState.prevSecondSelection] ===
       pieceToNumber["P"][opponentColor] &&
-    Math.abs(userState.prevSelection[1] - userState.prevSelection[0]) / 8 === 2
+    Math.abs(userState.prevSecondSelection - userState.prevFirstSelection) /
+      8 ===
+      2
   ) {
     move.attackRange.add(index - 1 + oneRowForward);
   }
 
   if (
-    index + 1 === userState.prevSelection[1] &&
-    boardState[userState.prevSelection[1]] ===
+    index + 1 === userState.prevSecondSelection &&
+    boardState[userState.prevSecondSelection] ===
       pieceToNumber["P"][opponentColor] &&
-    Math.abs(userState.prevSelection[1] - userState.prevSelection[0]) / 8 === 2
+    Math.abs(userState.prevSecondSelection - userState.prevFirstSelection) /
+      8 ===
+      2
   ) {
     move.attackRange.add(index + 1 + oneRowForward);
   }

@@ -15,23 +15,24 @@ import gameHandler from "./lib/gameHandler/gameHandler";
 import { useTimer } from "react-timer-hook";
 import Header from "./components/header";
 import HistoryNode from "./lib/gameHandler/historyNode";
-import PromotionDialog from "./components/dialogs/promotionDialog";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
 const App = () => {
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
+  const historyGraphRef = useRef<SVGSVGElement>(null);
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
   const [boardState, setBoardState] = useState(initialBoardState); // stores the current board state
   const [userState, setUserState] = useState({
-    prevSelection: [-1, -1],
+    prevFirstSelection: -1,
+    prevSecondSelection: -1,
     firstSelection: -1,
     secondSelection: -1,
-    rootNode: null,
-    currentNode: null, // current location in history
+    rootNode: JSON.stringify(initialBoardState),
+    currentNode: JSON.stringify(initialBoardState), // current location in history
     gameWinner: "", // declare winner
     playerTurn: "white", // current player turn
     canCastle: {
@@ -61,13 +62,10 @@ const App = () => {
 
   // set the first history state to the board's initial state
   const [history, setHistory] = useState(() => {
-    const currentNode = new HistoryNode(boardState, timer);
-    const historySet = new Set() as Set<HistoryNode>;
-    historySet.add(currentNode);
-    setUserState((prevState) => {
-      return { ...prevState, currentNode, rootNode: currentNode };
-    });
-    return historySet;
+    const currentNode = new HistoryNode(boardState, userState, null, timer);
+    const historyMap = new Map() as Map<string, HistoryNode>;
+    historyMap.set(JSON.stringify(boardState), currentNode);
+    return historyMap;
   });
 
   useEffect(() => {
@@ -82,31 +80,19 @@ const App = () => {
     );
   }, [userState]);
 
-  useEffect(() => {}, [history]);
-
-  const time = new Date();
-
   return (
     <div id="app">
       <div className="game-title" />
       <HistoryContext.Provider value={[history, setHistory]}>
         <BoardContext.Provider value={[boardState, setBoardState]}>
           <UserContext.Provider value={[userState, setUserState]}>
-            <PromotionDialog
-              promoModalRef={promoModalRef}
-              userState={userState}
-              setUserState={setUserState}
-            />
-            <GameEndDialog
-              gameEndModalRef={gameEndModalRef}
-              userState={userState}
-            />
+            <GameEndDialog gameEndModalRef={gameEndModalRef} />
             <div className="game-display">
               <Header timer={timer} />
-              <ChessBoard moves={moves} />
+              <ChessBoard moves={moves} promoModalRef={promoModalRef} />
             </div>
             <div className="history-display">
-              {/* <HistoryGraph history={history} userState={userState} /> */}
+              <HistoryGraph historyGraphRef={historyGraphRef} />
             </div>
           </UserContext.Provider>
         </BoardContext.Provider>

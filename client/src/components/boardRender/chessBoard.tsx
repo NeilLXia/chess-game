@@ -1,10 +1,16 @@
 import * as React from "react";
-import { useContext } from "react";
-
+import { useContext, MutableRefObject } from "react";
 import { UserContext } from "../../contexts/userContext";
 import ChessSquare from "./chessSquare";
+import PromotionDialog from "../dialogs/promotionDialog";
 
-const ChessBoard = ({ moves }: any) => {
+const ChessBoard = ({
+  moves,
+  promoModalRef,
+}: {
+  moves: any;
+  promoModalRef: MutableRefObject<HTMLDialogElement>;
+}) => {
   const [userState, setUserState] = useContext(UserContext);
 
   // render 8 x 8 square grid and mark them as either black or white
@@ -15,8 +21,8 @@ const ChessBoard = ({ moves }: any) => {
 
       const noSelectionColor = moves[index]
         ? "blue"
-        : index === userState.prevSelection[0] ||
-          index === userState.prevSelection[1]
+        : index === userState.prevFirstSelection ||
+          index === userState.prevSecondSelection
         ? "yellow"
         : "";
       const pieceSelectedColor =
@@ -26,8 +32,8 @@ const ChessBoard = ({ moves }: any) => {
           ? "red"
           : moves[userState.firstSelection]?.moveRange.has(index)
           ? "blue"
-          : index === userState.prevSelection[0] ||
-            index === userState.prevSelection[1]
+          : index === userState.prevFirstSelection ||
+            index === userState.prevSecondSelection
           ? "yellow"
           : "";
       const overlayColor =
@@ -37,7 +43,8 @@ const ChessBoard = ({ moves }: any) => {
   );
 
   return (
-    <div className="chessboard">
+    <div id="chessboard" className="chessboard">
+      <PromotionDialog promoModalRef={promoModalRef} />
       {squares.map(
         (square: {
           index: number;

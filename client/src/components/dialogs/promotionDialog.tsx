@@ -1,17 +1,15 @@
 import * as React from "react";
-import { MutableRefObject } from "react";
+import { useContext, MutableRefObject } from "react";
 import { pieceToUnicode } from "../../lib/gameHandler/pieceTypes";
+import { UserContext } from "../../contexts/userContext";
 
 function PromotionDialog({
   promoModalRef,
-  userState,
-  setUserState,
 }: {
   promoModalRef: MutableRefObject<HTMLDialogElement>;
-  userState: { [key: string]: any };
-  setUserState: Function;
 }) {
-  const promoPieces = ["Q", "R", "B", "N"];
+  const [userState, setUserState] = useContext(UserContext);
+  const promoPieces = ["Q", "N", "R", "B"];
 
   const promotePawn = (piece: string) => {
     setUserState((prevState: { [key: string]: any }) => {
@@ -28,27 +26,24 @@ function PromotionDialog({
   });
 
   return (
-    <dialog ref={promoModalRef} className="promotion-dialog">
-      <div className="dialog-title">Pawn Promotion</div>
-      <div className="promotion-list">
-        {promoPieces.map((piece: string) => {
-          return (
-            <button
-              key={piece}
-              className="promotion-button"
-              onClick={() => promotePawn(piece)}
+    <dialog ref={promoModalRef} className="dialog promotion-dialog">
+      {promoPieces.map((piece: string) => {
+        return (
+          <button
+            key={piece}
+            className="promotion-button"
+            onClick={() => promotePawn(piece)}
+          >
+            <div
+              className={`board-piece ${
+                userState.isPromo ? "black-piece" : "white-piece"
+              }`}
             >
-              <div
-                className={`board-piece ${
-                  userState.isPromo ? "black-piece" : "white-piece"
-                }`}
-              >
-                <div className="piece-icon">{pieceToUnicode[piece]}</div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+              <div className="piece-icon">{pieceToUnicode[piece]}</div>
+            </div>
+          </button>
+        );
+      })}
     </dialog>
   );
 }
