@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const SRC_DIR = path.join(__dirname, "/client/src");
-const DIST_DIR = path.join(__dirname, "/client/dist");
+const DIST_DIR = path.join(__dirname, "/client/static");
 
 module.exports = {
   entry: path.join(SRC_DIR, "index.tsx"),
