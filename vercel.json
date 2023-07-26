@@ -1,7 +1,7 @@
-// {
-//   "git": {
-//     "deploymentEnabled": {
-//       "main": false
-//     }
-//   }
-// }
+{
+  "COMMENTED_git": {
+    "deploymentEnabled": {
+      "main": false
+    }
+  }
+}
