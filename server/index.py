@@ -1,40 +1,42 @@
 import os
 from flask import Flask, request, jsonify, send_from_directory
+from database.index import createGameTree, getGameTree
 
-# template_dir = os.path.dirname(os.path.dirname(
-#     os.path.abspath(os.path.dirname(__file__))))
-# template_dir = os.path.join(template_dir, 'chess-game')
-# template_dir = os.path.join(template_dir, 'client/templates')
-# print(template_dir)
-# app = Flask(__name__, template_folder=template_dir)
 app = Flask(__name__, static_folder='../client/static')
-print(app.static_folder)
+
+# API routes controller
 
 
-@app.route('/games/<game_id>')
+@app.route('/getgame/<game_id>')
 def getGame(game_id):
-    gameHistory = {
-        'gameId': game_id,
-        'boardState': [],
-        'userState': {},
-        'timer': {},
-        'moveNumber': 0,
-        'chessNodation': '',
-        'parent': None,
-        'children': list(),
-    }
+    gameHistory = getGameTree(game_id)
+    return jsonify(gameHistory), 200
 
-    return jsonify(gameHistory)
+
+@app.route('/newgame', methods=["POST"])
+def newGame():
+    game_id = createGameTree()
+    return game_id, 201
+
+
+@app.route('/updategame/<game_id>', methods=["PUT"])
+def updateGame(game_id):
+    body = request.json
+    return jsonify(game_id), 201
 
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def Home(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
+        return send_from_directory(app.static_folder, path), 200
     else:
-        return send_from_directory(app.static_folder, 'index.html')
+        return send_from_directory(app.static_folder, 'index.html'), 200
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# game_id root_node
+
+# root_node game_id parent_node child_nodes boardstate userstate timer movenumber chessnotation

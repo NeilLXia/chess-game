@@ -218,9 +218,9 @@ const gameHandler = (
               history.get(JSON.stringify(prevBoardState)),
               timer
             );
-          // console.log(history.get(JSON.stringify(prevBoardState)), newNode);
           newNode.parent?.children.add(newNode);
           prevState.set(JSON.stringify(finalBoardState), newNode);
+
           return prevState;
         });
 

@@ -96,6 +96,12 @@
   border-left: 1px solid white;
 }
 
+/* make scrollbar transparent */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
 .graph-container {
   width: 350;
   height: calc(100dvh - 200px);
