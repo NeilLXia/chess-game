@@ -1,22 +1,25 @@
 import os
 from flask import Flask, request, jsonify, send_from_directory
-from database.index import createGameTree, getGameTree
+from postgres import createGame
+from model import getTree, createTree
 
 app = Flask(__name__, static_folder='../client/static')
 
 # API routes controller
 
 
-@app.route('/getgame/<game_id>')
-def getGame(game_id):
-    gameHistory = getGameTree(game_id)
-    return jsonify(gameHistory), 200
-
-
 @app.route('/newgame', methods=["POST"])
 def newGame():
-    game_id = createGameTree()
+    game_id = createGame()
+    createTree(game_id)
+    print('new game', game_id)
     return game_id, 201
+
+
+@app.route('/getgame/<game_id>')
+def getGame(game_id):
+    gameHistory = getTree(game_id)
+    return jsonify(gameHistory), 200
 
 
 @app.route('/updategame/<game_id>', methods=["PUT"])
@@ -36,7 +39,3 @@ def Home(path):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# game_id root_node
-
-# root_node game_id parent_node child_nodes boardstate userstate timer movenumber chessnotation
