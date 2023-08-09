@@ -82,9 +82,6 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
         stroke={node === history.get(userState.currentNode) ? "#f00" : "#fff"}
         strokeWidth="2"
         onClick={() => {
-          if (node === rootNode) {
-            return;
-          }
           setUserState(() => {
             setBoardState(() => [...node.boardState]);
             return { ...node.userState };

@@ -1,5 +1,5 @@
 from flask import jsonify
-from mongodb import get_database
+from model.mongodb import get_database
 
 treeDB = get_database()
 
