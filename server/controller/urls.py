@@ -20,4 +20,6 @@ from controller import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('newgame/', views.newGame, name='new_game'),
+    path('game/', views.getGame, name='get_game'),
 ]

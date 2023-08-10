@@ -28,7 +28,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '18.119.166.31']
+ALLOWED_HOSTS = ['localhost', '18.119.166.31',
+                 'http://ec2-18-119-166-31.us-east-2.compute.amazonaws.com/']
 
 
 # Application definition
@@ -134,3 +135,4 @@ TEMPLATE_DIRS = (
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SECURE_SSL_REDIRECT = False
