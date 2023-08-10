@@ -12,13 +12,17 @@ def index(request):
     return render(request, 'index-django.html')
 
 
-def newGame():
+def newGame(request):
     game_id = createGame()
     print('new game', game_id)
     return redirect(reverse('get_game') + '?game_id={game_id}'.format(game_id))
 
 
-def getGame(game_id):
+def getGame(request):
+    game_id = request.GET.get('game_id', None)
+    if game_id == None:
+        return "Error, no game_id provided", 400
+
     createTree(game_id)
     print('new game 2', game_id)
     return game_id, 201
