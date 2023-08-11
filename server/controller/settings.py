@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'chess',
         'USER': 'postgres',
         'PASSWORD': os.environ.get("POSTGRESQL_PASSWORD"),
-        'HOST': 'localhost',
+        'HOST': 'chess-web-app-database.city1b7unl1h.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
