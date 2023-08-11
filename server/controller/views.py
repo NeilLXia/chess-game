@@ -12,18 +12,18 @@ def index(request):
     return render(request, 'index-django.html')
 
 
-def newGame(request):
-    game_id = createGame()
+async def newGame(request):
+    game_id = await createGame()
     print('new game', game_id)
     return redirect(reverse('get_game') + '?game_id={game_id}'.format(game_id))
 
 
-def getGame(request):
+async def getGame(request):
     game_id = request.GET.get('game_id', None)
     if game_id == None:
         return "Error, no game_id provided", 400
 
-    createTree(game_id)
+    await createTree(game_id)
     print('new game 2', game_id)
     return game_id, 201
 

@@ -41,9 +41,11 @@
   "dependencies": {
     "@redux-devtools/core": "^3.13.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "aws": "^0.0.3-2",
     "dotenv": "^16.3.1",
     "eslint-plugin": "^1.0.1",
     "flask": "^0.2.10",
+    "npm": "^9.8.1",
     "pip": "^0.0.1",
     "python": "^0.0.4",
     "react": "^18.2.0",
