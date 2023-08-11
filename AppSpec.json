@@ -1,0 +1,21 @@
+{
+  "version": 0.0,
+  "Resources": [
+    {
+      "MyFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "Name": "",
+          "Alias": "",
+          "CurrentVersion": "",
+          "TargetVersion": ""
+        }
+      }
+    }
+  ],
+  "Hooks": [
+    {
+      "LifeCycleEvent": ""
+    }
+  ]
+}

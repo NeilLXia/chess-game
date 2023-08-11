@@ -13,6 +13,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import pycurl
+from io import BytesIO
+
+# Determine Public IP address of EC2 instance
+buffer = BytesIO()
+c = pycurl.Curl()
+c.setopt(c.URL, 'checkip.amazonaws.com')
+c.setopt(c.WRITEDATA, buffer)
+c.perform()
+c.close()
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,8 +39,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '18.119.166.31',
-                 'http://ec2-18-119-166-31.us-east-2.compute.amazonaws.com/']
+ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS.append(buffer.getvalue().decode('iso-8859-1').strip())
 
 
 # Application definition
