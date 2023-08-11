@@ -9,7 +9,7 @@ source venv/bin/activate
 # install dependencies
 cd /home/ubuntu/chess-game
 echo "Y" | sudo apt install libcurl4-openssl-dev libssl-dev
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 
 # run server
 python3 server/manage.py makemigrations
