@@ -24,6 +24,7 @@ multidict==6.0.4
 nest-asyncio==1.5.7
 packaging==23.1
 psycopg2-binary==2.9.6
+pycurl==7.45.2
 pymongo==4.4.1
 python-dotenv==1.0.0
 sqlparse==0.4.4
