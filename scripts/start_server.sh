@@ -12,6 +12,6 @@ echo "Y" | sudo apt install libcurl4-openssl-dev libssl-dev
 sudo pip3 install -r requirements.txt
 
 # run server
-python3 manage.py makemigrations
-python3 manage.py migrate
+python3 server/manage.py makemigrations
+python3 server/manage.py migrate
 screen -d -m python3 server/manage.py runserver 0:0:0:0:8000
