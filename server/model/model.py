@@ -1,9 +1,11 @@
 from flask import jsonify
-from model.mongodb import get_database as get_mongodb
-from model.postgres import get_database as get_postgres
+# from model.mongodb import get_database as get_mongodb
+# from model.postgres import get_database as get_postgres
+import model.mongodb as mongodb
+import model.postgres as postgres
 
-treeDB = get_mongodb()
-metadataDB = get_postgres()
+treeDB = mongodb.get_database()
+metadataDB = postgres.get_database()
 
 
 def getTree(root_id):

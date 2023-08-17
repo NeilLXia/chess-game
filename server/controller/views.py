@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse
-from model.model import createGame, createTree, getTree
+import model.model as model
 
 
 def index(request):
@@ -12,7 +12,7 @@ def index(request):
 
 
 async def newGame(request):
-    game_id = await createGame()
+    game_id = await model.createGame()
     print('new game', game_id)
     return redirect(reverse('get_game') + '?game_id={game_id}'.format(game_id))
 
@@ -22,7 +22,7 @@ async def getGame(request):
     if game_id == None:
         return "Error, no game_id provided", 400
 
-    await createTree(game_id)
+    await model.createTree(game_id)
     print('new game 2', game_id)
     return game_id, 201
 
