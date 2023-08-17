@@ -1,6 +1,7 @@
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from secrets_manager import get_secret
 
 load_dotenv()
 
@@ -8,7 +9,7 @@ load_dotenv()
 def get_database():
     try:
         CONNECTION_STRING = 'mongodb+srv://neillxia:{password}@chess-history-database.k4rbjbb.mongodb.net/'.format(
-            password=os.environ.get("MONGODB_PASSWORD"))
+            password=get_secret()["MONGODB_PASSWORD"])
         client = MongoClient(CONNECTION_STRING)
         return client['chess-history-database']
     except:
