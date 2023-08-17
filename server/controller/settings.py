@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret()["DJANGO_SECRET_KEY"]
+SECRET_KEY = get_secret()['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'chess',
         'USER': 'postgres',
-        'PASSWORD': os.environ.get('POSTGRESQL_PASSWORD'),
+        'PASSWORD': get_secret()['POSTGRESQL_PASSWORD'],
         'HOST': 'chess-web-app-database.city1b7unl1h.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
