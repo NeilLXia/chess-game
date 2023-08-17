@@ -54,6 +54,5 @@ async def createGame(player_id=0, color="white", time_limit=5):
             metadataDB.rollback()
 
         cur.close()
-        return game_id
 
     return None
