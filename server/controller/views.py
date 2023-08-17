@@ -8,7 +8,6 @@ from model.model import createGame, createTree, getTree
 
 
 def index(request):
-    # return HttpResponse('Hello World')
     return render(request, 'index-django.html')
 
 
