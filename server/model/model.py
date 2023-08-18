@@ -39,8 +39,8 @@ def createTree(root_id):
     return None
 
 
-async def createGame(player_id=0, color="white", time_limit=5):
-    print('MongoDB: ', metadataDB)
+async def createGame(player_id=1, color="white", time_limit=5):
+    print('Postgres: ', metadataDB)
     if metadataDB != None:
         try:
             cur = metadataDB.cursor()
