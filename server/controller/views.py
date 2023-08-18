@@ -15,16 +15,16 @@ async def newGame(request):
     game_id = await model.createGame()
     print('new game', game_id)
     if game_id == None:
-        return 'Error in new game creation', 400
+        return HttpResponse('Error in new game creation', status=400)
     return redirect(reverse('get_game') + '?game_id={game_id}'.format(game_id))
 
 
 async def getGame(request):
-    print(request)
+    print('get game req', request)
     game_id = request.GET.get('game_id', None)
     print('get game', game_id)
     if game_id == None:
-        return "Error, no game_id provided", 400
+        return HttpResponse('Error, no game_id provided', status=400)
 
     await model.createTree(game_id)
     print('get game 2', game_id)
