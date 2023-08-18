@@ -16,8 +16,7 @@ async def newGame(request):
     print('new game', game_id)
     if game_id == None:
         return HttpResponse('Error in new game creation', status=400)
-    print(reverse('get_game'))
-    return HttpResponse('<h1>new game created with ID: {id}</h1>'.format(id=game_id), status=201)
+    # return HttpResponse('<h1>new game created with ID: {id}</h1>'.format(id=game_id), status=201)
     return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
 
 
