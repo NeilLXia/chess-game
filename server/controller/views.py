@@ -21,11 +21,12 @@ async def newGame(request):
 
 async def getGame(request):
     game_id = request.GET.get('game_id', None)
+    print('get game', game_id)
     if game_id == None:
         return "Error, no game_id provided", 400
 
     await model.createTree(game_id)
-    print('new game 2', game_id)
+    print('get game 2', game_id)
     return game_id, 201
 
 
