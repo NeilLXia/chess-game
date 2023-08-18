@@ -20,6 +20,7 @@ async def newGame(request):
 
 
 async def getGame(request):
+    print(request)
     game_id = request.GET.get('game_id', None)
     print('get game', game_id)
     if game_id == None:
