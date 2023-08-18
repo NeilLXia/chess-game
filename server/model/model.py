@@ -48,8 +48,10 @@ async def createGame(player_id=1, color="white", time_limit=5):
             cur = metadataDB.cursor()
             player_color = "player_white" if color == "white" else "player_black"
             cur.execute(
-                f"INSERT INTO games (time_limit, {player_color}) VALUES ({time_limit}, {player_id}) RETURNING game_id")
+                f'INSERT INTO games (time_limit, {player_color}) VALUES ({time_limit}, {player_id}) RETURNING game_id;')
             game_id = cur.fetchone()[0]
+            cur.execute('SELECT * FROM games;')
+            print(cur.fetchall())
             return game_id
         except Exception as err:
             print(err)
