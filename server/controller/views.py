@@ -21,14 +21,15 @@ async def newGame(request):
 
 
 async def getGame(request):
-    print('get game req', request)
     game_id = request.GET.get('game_id', None)
-    print('get game', game_id)
     if game_id == None:
         return HttpResponse('Error, no game_id provided', status=400)
-
-    await model.createTree(game_id)
+    if await model.getTree(game_id) == None:
+        await model.createTree(game_id)
+    game_tree = await model.getTree(game_id)
     print('get game 2', game_id)
+    return JsonResponse(game_tree, status=201)
+
     return game_id, 201
 
 

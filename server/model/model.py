@@ -16,10 +16,11 @@ def getTree(root_id):
     return None
 
 
-def createTree(root_id):
+async def createTree(root_id):
+    print('treeDB: ', treeDB)
     if treeDB != None:
         try:
-            treeDB['trees'].insert_one({
+            await treeDB['trees'].insert_one({
                 'root_id': root_id,
                 'nodes': {{
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '05030406010405',
@@ -34,6 +35,7 @@ def createTree(root_id):
                               'black': {'minutes': 5, 'seconds': 0}}
                 }}
             })
+            return 201
         except:
             print('Error retrieving history tree')
     return None
