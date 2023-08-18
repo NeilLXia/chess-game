@@ -14,6 +14,8 @@ def index(request):
 async def newGame(request):
     game_id = await model.createGame()
     print('new game', game_id)
+    if game_id == None:
+        return 'Error in new game creation', 400
     return redirect(reverse('get_game') + '?game_id={game_id}'.format(game_id))
 
 

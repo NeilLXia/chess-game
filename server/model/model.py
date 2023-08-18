@@ -1,6 +1,4 @@
 from flask import jsonify
-# from model.mongodb import get_database as get_mongodb
-# from model.postgres import get_database as get_postgres
 import model.mongodb as mongodb
 import model.postgres as postgres
 
@@ -42,6 +40,7 @@ def createTree(root_id):
 
 
 async def createGame(player_id=0, color="white", time_limit=5):
+    print('MongoDB: ', metadataDB)
     if metadataDB != None:
         try:
             cur = metadataDB.cursor()
