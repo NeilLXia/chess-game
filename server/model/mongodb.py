@@ -1,5 +1,5 @@
 import os
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 from dotenv import load_dotenv
 from secrets_manager import get_secret
 
@@ -12,8 +12,8 @@ def get_database():
             password=get_secret()["MONGODB_PASSWORD"])
         client = MongoClient(CONNECTION_STRING)
         return client['chess-history-database']
-    except:
-        print('Error connecting to database')
+    except errors:
+        print('Error connecting to database', errors)
         return None
 
 
