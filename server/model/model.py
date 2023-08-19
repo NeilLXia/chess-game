@@ -21,7 +21,7 @@ async def createTree(root_id):
     print('treeDB: ', treeDB)
     if treeDB != None:
         try:
-            await treeDB['trees'].insert_one({
+            treeDB['trees'].insert_one({
                 'root_id': 1,
                 'nodes': [{
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '05030406010405',
