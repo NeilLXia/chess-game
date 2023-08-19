@@ -1,4 +1,5 @@
 from flask import jsonify
+from pymongo import errors
 import model.mongodb as mongodb
 import model.postgres as postgres
 
@@ -11,8 +12,8 @@ async def getTree(root_id):
         try:
             document = await treeDB['trees'].find_one({'root_id': root_id})
             return jsonify(document['nodes'])
-        except:
-            print('Error retrieving history tree')
+        except errors:
+            print('Error retrieving history tree ', errors)
     return None
 
 
@@ -36,8 +37,8 @@ async def createTree(root_id):
                 }}
             })
             return 201
-        except:
-            print('Error retrieving history tree')
+        except errors:
+            print('Error retrieving history tree ', errors)
     return None
 
 
@@ -56,7 +57,6 @@ async def createGame(player_id=1, color="white", time_limit=5):
             print(err)
             # rollback the previous transaction before starting another
             metadataDB.rollback()
-
-        cur.close()
-
+        finally:
+            cur.close()
     return None
