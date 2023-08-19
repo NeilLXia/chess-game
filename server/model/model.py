@@ -1,5 +1,5 @@
 from flask import jsonify
-from pymongo import errors
+from pymongo.errors import ConnectionFailure, ConfigurationError, CollectionInvalid, InvalidOperation, PyMongoError
 import model.mongodb as mongodb
 import model.postgres as postgres
 
@@ -12,7 +12,7 @@ async def getTree(root_id):
         try:
             document = await treeDB['trees'].find_one({'root_id': root_id})
             return jsonify(document['nodes'])
-        except errors as e:
+        except PyMongoError as e:
             print('Error retrieving history tree ', e)
     return None
 
@@ -37,7 +37,7 @@ async def createTree(root_id):
                 }]
             })
             return 201
-        except errors as e:
+        except PyMongoError as e:
             print('Error retrieving history tree ', e)
     return None
 
