@@ -13,8 +13,8 @@ def index(request):
 
 async def newGame(request):
     game_id = await model.createGame()
-    await model.createTree(game_id)
-    print('new game', game_id)
+    tempcode = await model.createTree(game_id)
+    print('new game', game_id, tempcode)
     if game_id == None:
         return HttpResponse('Error in new game creation', status=400)
     return HttpResponse('Success, game created', status=201)
