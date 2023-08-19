@@ -12,8 +12,8 @@ async def getTree(root_id):
         try:
             document = await treeDB['trees'].find_one({'root_id': root_id})
             return jsonify(document['nodes'])
-        except errors:
-            print('Error retrieving history tree ', errors)
+        except errors as e:
+            print('Error retrieving history tree ', e)
     return None
 
 
@@ -23,7 +23,7 @@ async def createTree(root_id):
         try:
             await treeDB['trees'].insert_one({
                 'root_id': root_id,
-                'nodes': {{
+                'nodes': {
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '05030406010405',
                     'user_state': {'selection_1': None,
                                    'selection_2': None,
@@ -34,11 +34,11 @@ async def createTree(root_id):
                                    'player_turn': 'white'},
                     'timer': {'white': {'minutes': 5, 'seconds': 0},
                               'black': {'minutes': 5, 'seconds': 0}}
-                }}
+                }
             })
             return 201
-        except errors:
-            print('Error retrieving history tree ', errors)
+        except errors as e:
+            print('Error retrieving history tree ', e)
     return None
 
 
