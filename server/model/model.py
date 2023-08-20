@@ -17,12 +17,23 @@ async def getTree(root_id):
     return None
 
 
+async def updateTree(root_id, newNode):
+    if treeDB != None:
+        try:
+            updatedNodes = getTree(root_id).append(newNode)
+            await treeDB['trees'].update_one({'root_id': root_id}, {'$set': {'nodes': updatedNodes}})
+            return 201
+        except PyMongoError as e:
+            print('Error retrieving history tree ', e)
+    return None
+
+
 async def createTree(root_id):
     print('treeDB: ', treeDB)
     if treeDB != None:
         try:
             treeDB['trees'].insert_one({
-                'root_id': 1,
+                'root_id': root_id,
                 'nodes': [{
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '05030406010405',
                     'user_state': {'selection_1': None,
