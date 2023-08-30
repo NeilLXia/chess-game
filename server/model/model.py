@@ -12,21 +12,23 @@ def getTree(root_id):
     if treeDB != None:
         try:
             document = treeDB['trees'].find_one()  # {'root_id': root_id})
+            document2 = treeDB['trees'].find_one({'root_id': root_id})
+            print('doc2', document2)
             if document:
                 return document['nodes']
             else:
-                print(document)
-                return document
+                raise PyMongoError('no document found')
         except PyMongoError as e:
             print('Error retrieving history tree ', e)
     return None
 
 
-async def updateTree(root_id, newNode):
+def updateTree(root_id, newNode):
     if treeDB != None:
         try:
             updatedNodes = getTree(root_id).append(newNode)
-            await treeDB['trees'].update_one({'root_id': root_id}, {'$set': {'nodes': updatedNodes}})
+            treeDB['trees'].update_one({'root_id': root_id}, {
+                                       '$set': {'nodes': updatedNodes}})
             return 201
         except PyMongoError as e:
             print('Error retrieving history tree ', e)
