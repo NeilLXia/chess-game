@@ -29,6 +29,6 @@ async def getGame(request):
         return HttpResponse('Error, game not found', status=404)
 
     print('get game 2', game_id, game_tree)
-    return JsonResponse(game_tree, status=201)
+    return JsonResponse(game_tree, safe=False)
 
     return game_id, 201
