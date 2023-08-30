@@ -11,6 +11,8 @@ def getTree(root_id):
     if treeDB != None:
         try:
             document = treeDB['trees'].find_one({'root_id': root_id})
+            print(document)
+            print(document['nodes'])
             return jsonify(document['nodes'])
         except PyMongoError as e:
             print('Error retrieving history tree ', e)
