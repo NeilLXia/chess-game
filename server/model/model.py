@@ -11,7 +11,7 @@ def getTree(root_id):
     treeDB = mongodb.get_database()
     if treeDB != None:
         try:
-            document = treeDB['trees'].find_one({'root_id': root_id})
+            document = treeDB['trees'].find_one()  # {'root_id': root_id})
             if document:
                 return document['nodes']
             else:
