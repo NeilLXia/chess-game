@@ -7,9 +7,9 @@ treeDB = mongodb.get_database()
 metadataDB = postgres.get_database()
 
 
-async def getTree(root_id):
+def getTree(root_id):
     treeDB = mongodb.get_database()
-    if treeDB != None:
+    if treeDB:
         try:
             document = treeDB['trees'].find_one({'root_id': root_id})
             if document:
@@ -23,7 +23,7 @@ async def getTree(root_id):
 
 
 async def updateTree(root_id, newNode):
-    if treeDB != None:
+    if treeDB:
         try:
             updatedNodes = getTree(root_id).append(newNode)
             await treeDB['trees'].update_one({'root_id': root_id}, {'$set': {'nodes': updatedNodes}})
@@ -35,7 +35,7 @@ async def updateTree(root_id, newNode):
 
 async def createTree(root_id):
     print('treeDB: ', treeDB)
-    if treeDB != None:
+    if treeDB:
         try:
             treeDB['trees'].insert_one({
                 'root_id': root_id,
@@ -60,7 +60,7 @@ async def createTree(root_id):
 
 async def createGame(player_id=1, color="white", time_limit=5):
     print('Postgres: ', metadataDB)
-    if metadataDB != None:
+    if metadataDB:
         try:
             cur = metadataDB.cursor()
             player_color = "player_white" if color == "white" else "player_black"

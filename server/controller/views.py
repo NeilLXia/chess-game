@@ -13,19 +13,19 @@ def index(request):
 
 async def newGame(request):
     game_id = await model.createGame()
-    if game_id == None:
+    if not game_id:
         return HttpResponse('Error in new game creation', status=400)
     return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
 
 
 async def getGame(request):
     game_id = request.GET.get('game_id', None)
-    if game_id == None:
+    if not game_id:
         return HttpResponse('Error, no game_id provided', status=400)
 
-    game_tree = await model.getTree(game_id)
+    game_tree = model.getTree(game_id)
     print(game_tree)
-    if game_tree == None:
+    if not game_tree:
         return HttpResponse('Error, game not found', status=404)
 
     print('get game 2', game_id, game_tree)
