@@ -23,7 +23,8 @@ async def getGame(request):
     if game_id == None:
         return HttpResponse('Error, no game_id provided', status=400)
 
-    game_tree = await model.getTree(game_id)
+    game_tree = model.getTree(game_id)
+    print(game_tree)
     if game_tree == None:
         return HttpResponse('Error, game not found', status=404)
 
