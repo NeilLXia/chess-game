@@ -7,21 +7,22 @@ treeDB = mongodb.get_database()
 metadataDB = postgres.get_database()
 
 
-async def getTree(root_id):
+def getTree(root_id):
     if treeDB != None:
         try:
-            document = await treeDB['trees'].find_one({'root_id': root_id})
+            document = treeDB['trees'].find_one({'root_id': root_id})
             return jsonify(document['nodes'])
         except PyMongoError as e:
             print('Error retrieving history tree ', e)
     return None
 
 
-async def updateTree(root_id, newNode):
+def updateTree(root_id, newNode):
     if treeDB != None:
         try:
             updatedNodes = getTree(root_id).append(newNode)
-            await treeDB['trees'].update_one({'root_id': root_id}, {'$set': {'nodes': updatedNodes}})
+            treeDB['trees'].update_one({'root_id': root_id}, {
+                                       '$set': {'nodes': updatedNodes}})
             return 201
         except PyMongoError as e:
             print('Error retrieving history tree ', e)

@@ -18,18 +18,16 @@ async def newGame(request):
     return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
 
 
-async def getGame(request):
+def getGame(request):
     game_id = request.GET.get('game_id', None)
-    print(game_id)
     if game_id == None:
         return HttpResponse('Error, no game_id provided', status=400)
 
     game_tree = model.getTree(game_id)
-    print(game_tree)
     if game_tree == None:
         return HttpResponse('Error, game not found', status=404)
 
     print('get game 2', game_id, game_tree)
-    return JsonResponse(game_tree, safe=False)
+    return JsonResponse(game_tree, status=201)
 
     return game_id, 201
