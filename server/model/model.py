@@ -10,7 +10,7 @@ metadataDB = postgres.get_database()
 async def getTree(root_id):
     if treeDB != None:
         try:
-            document = await treeDB['trees'].find_one({'root_id': root_id})
+            document = await treeDB['trees'].find_one()  # {'root_id': root_id}
             print(document)
             return jsonify(document['nodes'])
         except PyMongoError as e:
