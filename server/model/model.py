@@ -8,14 +8,13 @@ metadataDB = postgres.get_database()
 
 
 def getTree(root_id):
-    treeDB = mongodb.get_database()
     if treeDB != None:
         try:
             document = treeDB['trees'].find_one()  # {'root_id': root_id})
             document2 = treeDB['trees'].find_one({'root_id': root_id})
             print('doc2', document2)
             if document:
-                return document['nodes']
+                return document
             else:
                 raise PyMongoError('no document found')
         except PyMongoError as e:
