@@ -11,7 +11,7 @@ async def getTree(root_id):
     if treeDB != None:
         try:
             print(root_id)
-            document = treeDB['trees'].find_one({'root_id': root_id})
+            document = treeDB['trees'].find_one({'root_id': 50s})
             if document:
                 return document['nodes']
             else:
