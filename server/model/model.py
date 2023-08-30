@@ -10,8 +10,7 @@ metadataDB = postgres.get_database()
 async def getTree(root_id):
     if treeDB != None:
         try:
-            print(root_id)
-            document = treeDB['trees'].find_one({'root_id': 50})
+            document = treeDB['trees'].find_one({'root_id': root_id})[0]
             if document:
                 return document['nodes']
             else:
