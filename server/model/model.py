@@ -16,7 +16,7 @@ def getTree(root_id):
     if treeDB != None:
         try:
             document = treeDB['trees'].find_one()  # {'root_id': root_id})
-            document2 = treeDB['trees'].find_one({'root_id': root_id})
+            document2 = treeDB['trees'].find_one({'root_id': 50})
             print('doc2', document2)
             if document:
                 return parseJson(document)

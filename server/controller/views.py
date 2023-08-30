@@ -27,5 +27,4 @@ async def getGame(request):
     if not game_tree:
         return HttpResponse('Error, game not found', status=404)
 
-    print('get game 2', game_id, type(game_tree))
     return JsonResponse(game_tree, status=201)
