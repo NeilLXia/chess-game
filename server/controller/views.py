@@ -13,7 +13,6 @@ def index(request):
 
 async def newGame(request):
     game_id = await model.createGame()
-    tempcode = await model.createTree(game_id)
     if game_id == None:
         return HttpResponse('Error in new game creation', status=400)
     return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
@@ -21,10 +20,12 @@ async def newGame(request):
 
 async def getGame(request):
     game_id = request.GET.get('game_id', None)
+    print(game_id)
     if game_id == None:
         return HttpResponse('Error, no game_id provided', status=400)
 
     game_tree = model.getTree(game_id)
+    print(game_tree)
     if game_tree == None:
         return HttpResponse('Error, game not found', status=404)
 
