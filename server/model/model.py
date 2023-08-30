@@ -1,10 +1,15 @@
 import json
+from bson import json_util
 from pymongo.errors import ConnectionFailure, ConfigurationError, CollectionInvalid, InvalidOperation, PyMongoError
 import model.mongodb as mongodb
 import model.postgres as postgres
 
 treeDB = mongodb.get_database()
 metadataDB = postgres.get_database()
+
+
+def parseJson(data):
+    return json.loads(json_util.dumps(data))
 
 
 def getTree(root_id):
@@ -14,7 +19,7 @@ def getTree(root_id):
             document2 = treeDB['trees'].find_one({'root_id': root_id})
             print('doc2', document2)
             if document:
-                return document
+                return parseJson(document)
             else:
                 raise PyMongoError('no document found')
         except PyMongoError as e:
