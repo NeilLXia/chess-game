@@ -1,5 +1,5 @@
 import checkAdjacentCollision from "../checkCollisions/checkAdjacentCollision";
-import checkBoardState from "../checkBoardState";
+import isKingInCheck from "../isKingInCheck";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
@@ -37,7 +37,7 @@ const findPawnMoves = (
       index + (playerColor === "white" ? -8 : 8)
     );
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.moveRange.add(index + (playerColor === "white" ? -8 : 8));
     }
   }
@@ -52,7 +52,7 @@ const findPawnMoves = (
       index,
       index + (playerColor === "white" ? -16 : 16)
     );
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.moveRange.add(index + (playerColor === "white" ? -16 : 16));
     }
   }
@@ -65,7 +65,7 @@ const findPawnMoves = (
       index + (playerColor === "white" ? -9 : 9)
     );
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.attackRange.add(index + (playerColor === "white" ? -9 : 9));
     }
   }
@@ -76,7 +76,7 @@ const findPawnMoves = (
       index + (playerColor === "white" ? -7 : 7)
     );
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.attackRange.add(index + (playerColor === "white" ? -7 : 7));
     }
   }

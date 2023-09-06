@@ -1,4 +1,4 @@
-import checkBoardState from "../checkBoardState";
+import isKingInCheck from "../isKingInCheck";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
@@ -46,7 +46,7 @@ const findQueenMoves = (
     validMoves.forEach((validMove: number) => {
       const newBoardState = simulateBoardMove(boardState, index, validMove);
 
-      if (checkBoardState({ boardState: newBoardState, userState })) {
+      if (isKingInCheck({ boardState: newBoardState, userState })) {
         move.moveRange.add(validMove);
       }
     });
@@ -54,7 +54,7 @@ const findQueenMoves = (
     collisions.forEach((collision: number) => {
       const newBoardState = simulateBoardMove(boardState, index, collision);
 
-      if (checkBoardState({ boardState: newBoardState, userState })) {
+      if (isKingInCheck({ boardState: newBoardState, userState })) {
         move.attackRange.add(collision);
       }
     });
@@ -77,7 +77,7 @@ const findQueenMoves = (
     validMoves.forEach((validMove: number) => {
       const newBoardState = simulateBoardMove(boardState, index, validMove);
 
-      if (checkBoardState({ boardState: newBoardState, userState })) {
+      if (isKingInCheck({ boardState: newBoardState, userState })) {
         move.moveRange.add(validMove);
       }
     });
@@ -85,7 +85,7 @@ const findQueenMoves = (
     collisions.forEach((collision: number) => {
       const newBoardState = simulateBoardMove(boardState, index, collision);
 
-      if (checkBoardState({ boardState: newBoardState, userState })) {
+      if (isKingInCheck({ boardState: newBoardState, userState })) {
         move.attackRange.add(collision);
       }
     });

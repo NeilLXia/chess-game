@@ -1,4 +1,4 @@
-import checkBoardState from "../gameHandler/checkBoardState";
+import isKingInCheck from "../gameHandler/isKingInCheck";
 import findMovablePieces from "../gameHandler/findMovablePieces";
 import HistoryNode from "../gameHandler/historyNode";
 import { numberToPiece } from "../gameHandler/pieceTypes";
@@ -28,7 +28,7 @@ const chessNotation = (
   }`;
   const isCaptureMove =
     priorNode.boardState[userState.prevSecondSelection] >= 0;
-  const isCheck = !checkBoardState({
+  const isCheck = !isKingInCheck({
     boardState: boardState,
     userState: userState,
   });

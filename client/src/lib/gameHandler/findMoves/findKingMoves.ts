@@ -1,4 +1,4 @@
-import checkBoardState from "../checkBoardState";
+import isKingInCheck from "../isKingInCheck";
 import checkAdjacentCollision from "../checkCollisions/checkAdjacentCollision";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../pieceTypes";
@@ -27,7 +27,7 @@ const findKingMoves = (
   validMoves.forEach((validMove: number) => {
     const newBoardState = simulateBoardMove(boardState, index, validMove);
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.moveRange.add(validMove);
     }
   });
@@ -35,7 +35,7 @@ const findKingMoves = (
   collisions.forEach((collision: number) => {
     const newBoardState = simulateBoardMove(boardState, index, collision);
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.attackRange.add(collision);
     }
   });
@@ -61,12 +61,12 @@ const findKingMoves = (
       userState.canCastle[playerColor][queenCastleRook]
     ) {
       if (
-        checkBoardState({ boardState, userState }) &&
-        checkBoardState({
+        isKingInCheck({ boardState, userState }) &&
+        isKingInCheck({
           boardState: simulateBoardMove(boardState, index, index - 1),
           userState,
         }) &&
-        checkBoardState({
+        isKingInCheck({
           boardState: simulateBoardMove(boardState, index, index - 2),
           userState,
         })
@@ -80,12 +80,12 @@ const findKingMoves = (
       userState.canCastle[playerColor][kingCastleRook]
     ) {
       if (
-        checkBoardState({ boardState, userState }) &&
-        checkBoardState({
+        isKingInCheck({ boardState, userState }) &&
+        isKingInCheck({
           boardState: simulateBoardMove(boardState, index, index + 1),
           userState,
         }) &&
-        checkBoardState({
+        isKingInCheck({
           boardState: simulateBoardMove(boardState, index, index + 2),
           userState,
         })

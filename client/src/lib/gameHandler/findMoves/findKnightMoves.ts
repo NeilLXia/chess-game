@@ -1,4 +1,4 @@
-import checkBoardState from "../checkBoardState";
+import isKingInCheck from "../isKingInCheck";
 import checkKnightCollision from "../checkCollisions/checkKnightCollision";
 import { pieceToNumber } from "../pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
@@ -26,7 +26,7 @@ const findKnightMoves = (
   validMoves.forEach((validMove: number) => {
     const newBoardState = simulateBoardMove(boardState, index, validMove);
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.moveRange.add(validMove);
     }
   });
@@ -34,7 +34,7 @@ const findKnightMoves = (
   collisions.forEach((collision: number) => {
     const newBoardState = simulateBoardMove(boardState, index, collision);
 
-    if (checkBoardState({ boardState: newBoardState, userState })) {
+    if (isKingInCheck({ boardState: newBoardState, userState })) {
       move.attackRange.add(collision);
     }
   });
