@@ -28,7 +28,7 @@ def getTree(root_id):
 def updateTree(root_id, newNode):
     if treeDB != None:
         try:
-            updatedNodes = getTree(root_id)['nodes']
+            updatedNodes = getTree(root_id)
             print(updatedNodes)
             updatedNodes.append(newNode)
             treeDB['trees'].update_one({'root_id': root_id}, {
