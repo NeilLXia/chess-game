@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse
 import model.model as model
+from operator import itemgetter
 
 
 def index(request):
@@ -33,14 +34,13 @@ async def getGame(request):
 
 async def addNode(request):
     if request.method == 'POST':
-        game_id = request.POST.get('game_id', None)
         data = json.loads(request.body.decode())
-        print(data)
+        game_id, newNode = itemgetter('game_id', 'newNode')(data)
 
         if not game_id:
             return HttpResponse('Error, no game_id provided', status=400)
 
-        # model.updateTree(game_id, newNode)
+        model.updateTree(game_id, newNode)
 
         # model.addToTree(game_id, data)
 
