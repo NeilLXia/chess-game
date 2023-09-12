@@ -35,9 +35,7 @@ async def getGame(request):
 async def addNode(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode())
-        print(data)
         game_id, newNode = itemgetter('game_id', 'newNode')(data)
-        print(game_id)
 
         if not game_id:
             return HttpResponse('Error, no game_id provided', status=400)
@@ -46,7 +44,7 @@ async def addNode(request):
 
         # model.addToTree(game_id, data)
 
-        return JsonResponse('it done worked', status=201)
+        return HttpResponse('it done worked', status=201)
     else:
         game_id = request.GET.get('game_id', None)
         return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
