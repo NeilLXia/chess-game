@@ -14,16 +14,15 @@ interface ChessSquareProps {
 
 // renders the square and piece to the board
 const ChessSquare = ({ square }: ChessSquareProps) => {
-  const [boardState, setBoardState] = useContext(BoardContext);
+  const [boardState] = useContext(BoardContext);
   const [userState, setUserState] = useContext(UserContext);
 
   const { index, squareColor, overlayColor } = square;
   const piece = boardState[index];
   const pieceType = numberToUnicode[piece];
 
-  const pieceStyles = `board-piece ${
-    piece >= 10 ? "black-piece" : piece >= 0 ? "white-piece" : ""
-  }`;
+  const pieceClass =
+    piece >= 10 ? "black-piece" : piece >= 0 ? "white-piece" : "";
 
   // determine square highlighting
   const overlayStyle = `overlay ${
@@ -32,24 +31,24 @@ const ChessSquare = ({ square }: ChessSquareProps) => {
     overlayColor === "grey" ? "overlay-grey" : ""
   } ${overlayColor === "yellow" ? "overlay-yellow" : ""}`;
 
+  const handleSquareClick = () => {
+    // store selection in state if player clicks on a highlighted square (not yellow)
+    if (overlayColor && overlayColor !== "yellow") {
+      setUserState((prevState: any) => ({
+        ...prevState,
+        firstSelection:
+          prevState.firstSelection === -1 ? index : prevState.firstSelection,
+        secondSelection:
+          prevState.firstSelection === -1 ? prevState.secondSelection : index,
+      }));
+    }
+  };
+
   return (
-    <div
-      className="board-square"
-      onClick={() => {
-        // store selection in state if player clicks on a highlighted square (not yellow)
-        if (overlayColor !== "" && overlayColor !== "yellow") {
-          setUserState((prevState: any) => {
-            if (prevState.firstSelection === -1) {
-              return { ...prevState, firstSelection: index };
-            }
-            return { ...prevState, secondSelection: index };
-          });
-        }
-      }}
-    >
+    <div className="board-square" onClick={handleSquareClick}>
       <div className={overlayStyle} />
       <div className={`${squareColor}-square`}>
-        <div className={pieceStyles}>
+        <div className={`board-piece ${pieceClass}`}>
           <div className="piece-icon">{pieceType}</div>
         </div>
       </div>

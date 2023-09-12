@@ -21,5 +21,6 @@ from controller import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('newgame/', views.newGame, name='new_game'),
+    path('game/add_node', views.addNode, name='add_node'),
     path('game/', views.getGame, name='get_game'),
 ]

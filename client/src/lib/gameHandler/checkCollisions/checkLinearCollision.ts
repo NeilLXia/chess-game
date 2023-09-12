@@ -22,14 +22,14 @@ const checkLinearCollision = (
     const checkPiece = boardState[checkLoc.x + 8 * checkLoc.y];
 
     // if the checked piece is the target piece, store collision
-    if (targetPiece.indexOf(checkPiece) >= 0) {
+    if (targetPiece.includes(checkPiece)) {
       collisions.add(checkLoc.x + 8 * checkLoc.y);
-      return { validMoves, collisions };
+      break;
     }
 
     // if the space is empty, accept valid move
     if (checkPiece >= 0) {
-      return { validMoves, collisions };
+      break;
     }
 
     validMoves.add(checkLoc.x + 8 * checkLoc.y);

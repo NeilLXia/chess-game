@@ -1,4 +1,5 @@
 import os
+import json
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.generic import TemplateView
@@ -28,3 +29,20 @@ async def getGame(request):
         return HttpResponse('Error, game not found', status=404)
 
     return JsonResponse(game_tree, status=201)
+
+
+async def addNode(request):
+    if request.method == 'POST':
+        game_id = request.POST.get('game_id', None)
+        data = json.loads(request.body.decode())
+        print(data)
+
+        if not game_id:
+            return HttpResponse('Error, no game_id provided', status=400)
+
+        # model.addToTree(game_id, data)
+
+        # return JsonResponse(game_tree, status=201)
+    else:
+        game_id = request.GET.get('game_id', None)
+        return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))

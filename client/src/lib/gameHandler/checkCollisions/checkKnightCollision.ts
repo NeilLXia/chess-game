@@ -18,7 +18,8 @@ const checkKnightCollision = (
 
   const validMoves = new Set();
   const collisions = new Set();
-  moves.forEach((move) => {
+
+  for (const move of moves) {
     const checkLoc = { x: current.x + move.x, y: current.y + move.y };
     if (
       checkLoc.x >= 0 &&
@@ -33,11 +34,11 @@ const checkKnightCollision = (
         validMoves.add(checkLoc.x + 8 * checkLoc.y);
         return;
       }
-      if (targetPiece.indexOf(checkPiece) >= 0) {
+      if (targetPiece.includes(checkPiece)) {
         collisions.add(checkLoc.x + 8 * checkLoc.y);
       }
     }
-  });
+  }
 
   return { validMoves, collisions };
 };

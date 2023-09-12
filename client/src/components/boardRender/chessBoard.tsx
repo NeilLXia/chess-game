@@ -11,7 +11,7 @@ const ChessBoard = ({
   moves: any;
   promoModalRef: MutableRefObject<HTMLDialogElement>;
 }) => {
-  const [userState, setUserState] = useContext(UserContext);
+  const [userState] = useContext(UserContext);
 
   // render 8 x 8 square grid and mark them as either black or white
   const squares = Array.from(Array(64).keys()).map(
@@ -25,6 +25,7 @@ const ChessBoard = ({
           index === userState.prevSecondSelection
         ? "yellow"
         : "";
+
       const pieceSelectedColor =
         index === userState.firstSelection
           ? "grey"
@@ -36,8 +37,10 @@ const ChessBoard = ({
             index === userState.prevSecondSelection
           ? "yellow"
           : "";
+
       const overlayColor =
         userState.firstSelection !== -1 ? pieceSelectedColor : noSelectionColor;
+
       return { index, squareColor, overlayColor };
     }
   );

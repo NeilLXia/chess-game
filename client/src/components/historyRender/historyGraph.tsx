@@ -16,16 +16,17 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
   const [boardState, setBoardState] = useContext(BoardContext);
   const [history, setHistory] = useContext(HistoryContext);
 
-  const [xSpacing, ySpacing] = [60, 80];
-  const nodeRadius = "16";
+  const xSpacing = 60;
+  const ySpacing = 80;
+  const nodeRadius = 16;
   const rootNode = history.get(userState.rootNode);
-  const nodeCounter = [] as Array<number>;
+  const nodeCounter: number[] = [];
   const numberOfBranchesByNode = new Map();
 
-  const graphLines = [] as Array<ReactNode>;
-  const graphNodes = [] as Array<ReactNode>;
-  const nodeLabels = [] as Array<ReactNode>;
-  const moveLabels = [] as Array<ReactNode>;
+  const graphLines: React.ReactNode[] = [];
+  const graphNodes: React.ReactNode[] = [];
+  const nodeLabels: React.ReactNode[] = [];
+  const moveLabels: React.ReactNode[] = [];
 
   let maxMoves = 0;
   let maxVariation = 0;
@@ -36,7 +37,7 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
     }
     nodeCounter[node.moveNumber]++;
 
-    const childIndices = [] as Array<number>;
+    const childIndices: number[] = [];
     let minimumChildIndex = Infinity;
 
     node.children.forEach((child: HistoryNode) => {
@@ -128,13 +129,16 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
     );
   }
 
+  const svgWidth = `${Math.max(350, xSpacing * (maxVariation + 1)) || "100%"}`;
+  const svgHeight = `${ySpacing * (maxMoves + 1)}px`;
+
   return (
     <div className="graph-container" id="graph-container">
       <svg
         className="history-graph"
         ref={historyGraphRef}
-        width={`${Math.max(350, xSpacing * (maxVariation + 1)) || "100%"}`}
-        height={`${ySpacing * (maxMoves + 1)}px`}
+        width={svgWidth}
+        height={svgHeight}
       >
         {moveLabels}
         {graphLines}
