@@ -44,7 +44,7 @@ async def addNode(request):
 
         # model.addToTree(game_id, data)
 
-        # return JsonResponse(game_tree, status=201)
+        return JsonResponse('it done worked', status=201)
     else:
         game_id = request.GET.get('game_id', None)
         return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
