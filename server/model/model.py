@@ -29,10 +29,10 @@ def updateTree(root_id, newNode):
     if treeDB != None:
         try:
             updatedNodes = getTree(root_id)['nodes']
+            updatedNodes.append(newNode)
             print(updatedNodes)
-            # updatedNodes.append(newNode)
-            treeDB['trees'].update_one({'root_id': root_id}, {
-                                       '$set': {'nodes': []}})
+            # treeDB['trees'].update_one({'root_id': root_id}, {
+            #                            '$set': {'nodes': updatedNodes}})
             return 201
         except PyMongoError as e:
             print('Error retrieving history tree ', e)
