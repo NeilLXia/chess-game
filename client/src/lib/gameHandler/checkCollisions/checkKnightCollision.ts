@@ -32,7 +32,7 @@ const checkKnightCollision = (
       // if the checked piece is a target piece OR if the check piece is a piece and target piece was left blank
       if (checkPiece < 0) {
         validMoves.add(checkLoc.x + 8 * checkLoc.y);
-        return;
+        continue;
       }
       if (targetPiece.includes(checkPiece)) {
         collisions.add(checkLoc.x + 8 * checkLoc.y);

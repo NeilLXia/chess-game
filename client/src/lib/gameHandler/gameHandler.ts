@@ -89,10 +89,10 @@ const gameHandler = (
         return { ...prevState, isPromo: false, promoValue: "" };
       });
     }
-  });
+    // });
 
-  setBoardState((prevBoardState: Array<number>) => {
-    const newBoardState = simulateBoardMove(prevBoardState, indexFrom, indexTo);
+    // setBoardState((prevBoardState: Array<number>) => {
+    //   const newBoardState = simulateBoardMove(prevBoardState, indexFrom, indexTo);
 
     const queenCastleRook = userState.playerTurn === "white" ? 56 : 0;
     const kingCastleRook = userState.playerTurn === "white" ? 63 : 7;
