@@ -1,5 +1,5 @@
-import initialBoardState from "../gameHandler/initialBoardState";
-import HistoryNode from "../gameHandler/historyNode";
+import initialBoardState from "../gameHandler/referenceData/initialBoardState";
+import HistoryNode from "../gameHandler/referenceData/historyNode";
 
 const postURL = "";
 

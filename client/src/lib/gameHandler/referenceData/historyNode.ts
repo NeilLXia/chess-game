@@ -1,4 +1,4 @@
-import chessNotation from "../graphBuilder/chessNotation";
+import chessNotation from "../../graphBuilder/chessNotation";
 
 class HistoryNode {
   boardState: Array<number>;

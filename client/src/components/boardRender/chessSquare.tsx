@@ -2,7 +2,7 @@ import * as React from "react";
 import { useContext } from "react";
 
 import { UserContext, BoardContext } from "../../contexts/userContext";
-import { numberToUnicode } from "../../lib/gameHandler/pieceTypes";
+import { numberToUnicode } from "../../lib/gameHandler/referenceData/pieceTypes";
 
 interface ChessSquareProps {
   square: {

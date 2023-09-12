@@ -1,6 +1,6 @@
 import isKingInCheck from "../isKingInCheck";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
-import { pieceToNumber } from "../pieceTypes";
+import { pieceToNumber } from "../referenceData/pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
 
 const findRookMoves = (

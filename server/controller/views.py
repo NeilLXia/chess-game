@@ -40,6 +40,8 @@ async def addNode(request):
         if not game_id:
             return HttpResponse('Error, no game_id provided', status=400)
 
+        # model.updateTree(game_id, newNode)
+
         # model.addToTree(game_id, data)
 
         # return JsonResponse(game_tree, status=201)

@@ -1,7 +1,7 @@
 import isKingInCheck from "../gameHandler/isKingInCheck";
 import findMovablePieces from "../gameHandler/findMovablePieces";
-import HistoryNode from "../gameHandler/historyNode";
-import { numberToPiece } from "../gameHandler/pieceTypes";
+import HistoryNode from "../gameHandler/referenceData/historyNode";
+import { numberToPiece } from "../gameHandler/referenceData/pieceTypes";
 
 const columnToLetter = {
   0: "a",

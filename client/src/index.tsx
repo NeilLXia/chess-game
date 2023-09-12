@@ -7,12 +7,12 @@ import {
   BoardContext,
   HistoryContext,
 } from "./contexts/userContext";
-import initialBoardState from "./lib/gameHandler/initialBoardState";
+import initialBoardState from "./lib/gameHandler/referenceData/initialBoardState";
 import ChessBoard from "./components/boardRender/chessBoard";
 import gameHandler from "./lib/gameHandler/gameHandler";
 import { useTimer } from "react-timer-hook";
 import Header from "./components/header";
-import HistoryNode from "./lib/gameHandler/historyNode";
+import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 

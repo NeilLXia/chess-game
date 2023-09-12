@@ -1,4 +1,4 @@
-import { pieceToNumber } from "./pieceTypes";
+import { pieceToNumber } from "./referenceData/pieceTypes";
 import checkKnightCollision from "./checkCollisions/checkKnightCollision";
 import checkLinearCollision from "./checkCollisions/checkLinearCollision";
 import checkAdjacentCollision from "./checkCollisions/checkAdjacentCollision";

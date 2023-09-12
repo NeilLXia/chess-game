@@ -1,7 +1,7 @@
 import { MutableRefObject } from "react";
 import findMovablePieces from "./findMovablePieces";
-import HistoryNode from "./historyNode";
-import { numberToPiece, pieceToNumber } from "./pieceTypes";
+import HistoryNode from "./referenceData/historyNode";
+import { numberToPiece, pieceToNumber } from "./referenceData/pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
 
 const gameHandler = (

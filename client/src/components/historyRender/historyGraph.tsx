@@ -5,7 +5,7 @@ import {
   BoardContext,
   HistoryContext,
 } from "../../contexts/userContext";
-import HistoryNode from "../../lib/gameHandler/historyNode";
+import HistoryNode from "../../lib/gameHandler/referenceData/historyNode";
 
 interface HistoryGraphProps {
   historyGraphRef: MutableRefObject<SVGSVGElement>;

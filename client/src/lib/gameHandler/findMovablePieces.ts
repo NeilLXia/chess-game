@@ -1,4 +1,4 @@
-import { pieceToNumber } from "./pieceTypes";
+import { pieceToNumber } from "./referenceData/pieceTypes";
 import findPawnMoves from "./findMoves/findPawnMoves";
 import findKnightMoves from "./findMoves/findKnightMoves";
 import findBishopMoves from "./findMoves/findBishopMoves";

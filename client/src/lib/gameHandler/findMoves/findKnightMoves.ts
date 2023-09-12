@@ -1,6 +1,6 @@
 import isKingInCheck from "../isKingInCheck";
 import checkKnightCollision from "../checkCollisions/checkKnightCollision";
-import { pieceToNumber } from "../pieceTypes";
+import { pieceToNumber } from "../referenceData/pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
 
 const findKnightMoves = (
