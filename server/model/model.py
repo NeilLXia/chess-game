@@ -72,7 +72,7 @@ async def createGame(player_id=1, color="white", time_limit=5):
             cur.execute(
                 f'INSERT INTO games (time_limit, {player_color}) VALUES ({time_limit}, {player_id}) RETURNING game_id;')
             game_id = cur.fetchone()[0]
-            createTree(game_id)
+            await createTree(game_id)
             metadataDB.commit()
             return game_id
         except Exception as err:
