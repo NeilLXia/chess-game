@@ -16,31 +16,38 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
-// const nodes = JSON.parse(document.getElementById("nodes").textContent);
+const nodes = JSON.parse(document.getElementById("nodes").textContent);
 
 const App = () => {
-  console.log("rerender");
-
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
   const historyGraphRef = useRef<SVGSVGElement>(null);
 
+  const lastBoardState = nodes![nodes.length - 1]["board_state"];
+
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
-  const [boardState, setBoardState] = useState(initialBoardState); // stores the current board state
+  const [boardState, setBoardState] = useState(
+    lastBoardState || initialBoardState
+  ); // stores the current board state
   const [userState, setUserState] = useState({
-    prevFirstSelection: -1,
-    prevSecondSelection: -1,
+    prevFirstSelection:
+      nodes![nodes.length - 1]["user_state"]["selection_1"] || -1,
+    prevSecondSelection:
+      nodes![nodes.length - 1]["user_state"]["selection_2"] || -1,
     firstSelection: -1,
     secondSelection: -1,
-    rootNode: JSON.stringify(initialBoardState),
-    currentNode: JSON.stringify(initialBoardState), // current location in history
+    rootNode: JSON.stringify(lastBoardState || initialBoardState),
+    currentNode: JSON.stringify(lastBoardState || initialBoardState), // current location in history
     gameWinner: "", // declare winner
-    playerTurn: "white", // current player turn
-    canCastle: {
-      black: { 0: true, 7: true },
-      white: { 56: true, 63: true },
-    } as { [key: string]: { [key: string]: boolean } },
+    playerTurn:
+      nodes![nodes.length - 1]["user_state"]["player_turn"] || "white", // current player turn
+    canCastle:
+      nodes![nodes.length - 1]["user_state"]["can_castle"] ||
+      ({
+        black: { 0: true, 7: true },
+        white: { 56: true, 63: true },
+      } as { [key: string]: { [key: string]: boolean } }),
     isPromo: false, // indicates whether a pawn is up for promotion
     promoValue: "", // stores the selected pawn promotion value
   });
