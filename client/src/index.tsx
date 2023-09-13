@@ -23,7 +23,7 @@ const App = () => {
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
   const historyGraphRef = useRef<SVGSVGElement>(null);
 
-  const lastBoardState = nodes![nodes.length - 1]["board_state"];
+  const lastBoardState = nodes![nodes.length - 1]!["board_state"];
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
@@ -32,18 +32,18 @@ const App = () => {
   ); // stores the current board state
   const [userState, setUserState] = useState({
     prevFirstSelection:
-      nodes![nodes.length - 1]["user_state"]["selection_1"] || -1,
+      nodes![nodes.length - 1]!["user_state"]["selection_1"] || -1,
     prevSecondSelection:
-      nodes![nodes.length - 1]["user_state"]["selection_2"] || -1,
+      nodes![nodes.length - 1]!["user_state"]["selection_2"] || -1,
     firstSelection: -1,
     secondSelection: -1,
     rootNode: JSON.stringify(lastBoardState || initialBoardState),
     currentNode: JSON.stringify(lastBoardState || initialBoardState), // current location in history
     gameWinner: "", // declare winner
     playerTurn:
-      nodes![nodes.length - 1]["user_state"]["player_turn"] || "white", // current player turn
+      nodes![nodes.length - 1]!["user_state"]["player_turn"] || "white", // current player turn
     canCastle:
-      nodes![nodes.length - 1]["user_state"]["can_castle"] ||
+      nodes![nodes.length - 1]!["user_state"]["can_castle"] ||
       ({
         black: { 0: true, 7: true },
         white: { 56: true, 63: true },
