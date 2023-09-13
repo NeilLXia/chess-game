@@ -16,6 +16,7 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
+// tree data from Django server
 const nodes = JSON.parse(document.getElementById("nodes").textContent);
 
 const App = () => {
@@ -24,11 +25,14 @@ const App = () => {
   const historyGraphRef = useRef<SVGSVGElement>(null);
 
   const mostRecentNode = nodes[nodes.length - 1];
+  const recentBoardState = mostRecentNode!["board_state"]
+    .split(/(..)/g)
+    .filter((s: string) => s);
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
   const [boardState, setBoardState] = useState(
-    mostRecentNode!["board_state"] || initialBoardState
+    recentBoardState || initialBoardState
   ); // stores the current board state
   const [userState, setUserState] = useState({
     prevFirstSelection:
@@ -37,12 +41,8 @@ const App = () => {
       nodes![nodes.length - 1]!["user_state"]["selection_2"] || -1,
     firstSelection: -1,
     secondSelection: -1,
-    rootNode: JSON.stringify(
-      mostRecentNode!["board_state"] || initialBoardState
-    ),
-    currentNode: JSON.stringify(
-      mostRecentNode!["board_state"] || initialBoardState
-    ), // current location in history
+    rootNode: JSON.stringify(recentBoardState || initialBoardState),
+    currentNode: JSON.stringify(recentBoardState || initialBoardState), // current location in history
     gameWinner: "", // declare winner
     playerTurn:
       nodes![nodes.length - 1]!["user_state"]["player_turn"] || "white", // current player turn
