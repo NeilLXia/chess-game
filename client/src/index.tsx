@@ -28,8 +28,8 @@ const App = () => {
   const recentBoardState = mostRecentNode!["board_state"]
     .split(/(..)/g)
     .map((s: string) => {
-      console.log(parseInt(s) - 1);
-      return parseInt(s) - 1;
+      console.log(Number(s) - 1);
+      return Number(s) - 1;
     });
   console.log(recentBoardState);
 
