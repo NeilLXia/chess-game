@@ -3,8 +3,10 @@ import findMovablePieces from "./findMovablePieces";
 import HistoryNode from "./referenceData/historyNode";
 import { numberToPiece, pieceToNumber } from "./referenceData/pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
+import updateServerTree from "../fetch/updateServerTree";
 
 const gameHandler = (
+  gameID: number,
   {
     boardState,
     setBoardState,
@@ -190,6 +192,8 @@ const gameHandler = (
 
         return prevState;
       });
+
+      updateServerTree(gameID, finalBoardState, newUserState);
 
       return newUserState;
     });

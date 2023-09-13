@@ -18,6 +18,7 @@ import HistoryGraph from "./components/historyRender/historyGraph";
 
 // tree data from Django server
 const nodes = JSON.parse(document.getElementById("nodes").textContent);
+const gameID = JSON.parse(document.getElementById("game_id").textContent);
 
 const App = () => {
   const promoModalRef = useRef<HTMLDialogElement>(null);
@@ -86,6 +87,7 @@ const App = () => {
 
   useEffect(() => {
     gameHandler(
+      gameID,
       { boardState, setBoardState },
       { userState, setUserState },
       { history, setHistory },
