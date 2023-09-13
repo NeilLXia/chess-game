@@ -27,7 +27,10 @@ const App = () => {
   const mostRecentNode = nodes[nodes.length - 1];
   const recentBoardState = mostRecentNode!["board_state"]
     .split(/(..)/g)
-    .filter((s: string) => parseInt(s) - 1);
+    .filter((s: string) => {
+      console.log(s);
+      return parseInt(s) - 1;
+    });
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
