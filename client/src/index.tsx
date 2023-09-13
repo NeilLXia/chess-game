@@ -16,10 +16,10 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
-const mydata = JSON.parse(document.getElementById("nodes").textContent);
+// const nodes = JSON.parse(document.getElementById("nodes").textContent);
 
 const App = () => {
-  console.log(mydata);
+  console.log("rerender");
 
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
