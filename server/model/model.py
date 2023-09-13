@@ -40,7 +40,6 @@ def updateTree(root_id, newNode):
 
 
 async def createTree(root_id):
-    print('treeDB: ', treeDB)
     if treeDB != None:
         try:
             treeDB['trees'].insert_one({
@@ -60,7 +59,7 @@ async def createTree(root_id):
             })
             return 201
         except PyMongoError as e:
-            print('Error retrieving history tree ', e)
+            print('Error creating history tree ', e)
     return None
 
 
@@ -73,6 +72,7 @@ async def createGame(player_id=1, color="white", time_limit=5):
             cur.execute(
                 f'INSERT INTO games (time_limit, {player_color}) VALUES ({time_limit}, {player_id}) RETURNING game_id;')
             game_id = cur.fetchone()[0]
+            createTree(game_id)
             metadataDB.commit()
             return game_id
         except Exception as err:
