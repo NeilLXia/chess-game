@@ -17,6 +17,8 @@ import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
 const App = () => {
+  console.log("{{nodes}}");
+
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
   const historyGraphRef = useRef<SVGSVGElement>(null);

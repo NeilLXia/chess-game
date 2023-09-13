@@ -29,7 +29,8 @@ async def getGame(request):
     if not game_tree:
         return HttpResponse('Error, game not found', status=404)
 
-    return JsonResponse(game_tree, status=201)
+    return render(request, 'index-django.html', context=game_tree)
+    # return JsonResponse(game_tree, status=201)
 
 
 async def addNode(request):
@@ -42,9 +43,7 @@ async def addNode(request):
 
         model.updateTree(game_id, newNode)
 
-        # model.addToTree(game_id, data)
-
-        return HttpResponse('it done worked', status=201)
+        return HttpResponse('Game {id} tree updated'.format(id=game_id), status=201)
     else:
         game_id = request.GET.get('game_id', None)
         return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
