@@ -30,7 +30,6 @@ async def getGame(request):
         return HttpResponse('Error, game not found', status=404)
 
     return render(request, 'index-django.html', context=game_tree)
-    # return JsonResponse(game_tree, status=201)
 
 
 async def addNode(request):
