@@ -23,12 +23,12 @@ const App = () => {
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
   const historyGraphRef = useRef<SVGSVGElement>(null);
 
-  const lastBoardState = nodes![nodes.length - 1]!["board_state"];
+  const mostRecentNode = nodes[nodes.length - 1];
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
   const [boardState, setBoardState] = useState(
-    lastBoardState || initialBoardState
+    mostRecentNode!["board_state"] || initialBoardState
   ); // stores the current board state
   const [userState, setUserState] = useState({
     prevFirstSelection:
@@ -37,8 +37,12 @@ const App = () => {
       nodes![nodes.length - 1]!["user_state"]["selection_2"] || -1,
     firstSelection: -1,
     secondSelection: -1,
-    rootNode: JSON.stringify(lastBoardState || initialBoardState),
-    currentNode: JSON.stringify(lastBoardState || initialBoardState), // current location in history
+    rootNode: JSON.stringify(
+      mostRecentNode!["board_state"] || initialBoardState
+    ),
+    currentNode: JSON.stringify(
+      mostRecentNode!["board_state"] || initialBoardState
+    ), // current location in history
     gameWinner: "", // declare winner
     playerTurn:
       nodes![nodes.length - 1]!["user_state"]["player_turn"] || "white", // current player turn
