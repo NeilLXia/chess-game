@@ -6,6 +6,11 @@
   </head>
   <body style="background-color: black">
     <div id="root"></div>
+    <script type="text/javascript">
+      var context = {
+        nodes: "{{nodes}}",
+      };
+    </script>
     <script src="{% static 'bundle.js' %}"></script>
     <script defer src="bundle.js"></script>
   </body>
