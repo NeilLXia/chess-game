@@ -16,8 +16,8 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
-const App = () => {
-  console.log("{{nodes}}");
+const App = (request: any) => {
+  console.log(request);
 
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
