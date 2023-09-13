@@ -29,10 +29,8 @@ const App = () => {
     .split(/(..)/g)
     .filter((s: string) => s)
     .map((s: string) => {
-      console.log(Number(s) - 1);
       return Number(s) - 1;
     });
-  console.log(recentBoardState);
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player

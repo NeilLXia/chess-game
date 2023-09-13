@@ -10,8 +10,7 @@ from operator import itemgetter
 
 
 def index(request):
-    return redirect(reverse('get_game') + '?game_id={id}'.format(id=55))
-    # return render(request, 'index-django.html')
+    return redirect(reverse('new_game'))
 
 
 async def newGame(request):

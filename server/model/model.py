@@ -45,7 +45,7 @@ async def createTree(root_id):
             treeDB['trees'].insert_one({
                 'root_id': root_id,
                 'nodes': [{
-                    'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '05030406010405',
+                    'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '0503040601040305',
                     'user_state': {'selection_1': None,
                                    'selection_2': None,
                                    'can_castle': {
