@@ -26,6 +26,7 @@ def getTree(root_id):
 
 
 def updateTree(root_id, newNode):
+    print(root_id, newNode)
     if treeDB != None:
         try:
             updatedNodes: list = getTree(root_id)['nodes']
