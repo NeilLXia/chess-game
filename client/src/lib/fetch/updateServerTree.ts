@@ -21,15 +21,14 @@ const updateServerTree = async (
       },
     },
   };
-
-  const response = await fetch(postURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newNode),
-  });
-  return response.json();
+  console.log(newNode.newNode.board_state);
+  // await fetch(postURL, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(newNode),
+  // });
 };
 
 export default updateServerTree;
