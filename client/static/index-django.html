@@ -6,7 +6,7 @@
   </head>
   <body style="background-color: black">
     <div id="root"></div>
-    {{ nodes|json_script:"nodes" }} {{ game_id|json_script:"game_id" }}
+    {{ nodes|json_script:"nodes" }} {{ game_id|json_script:"root_id " }}
     <script src="{% static 'bundle.js' %}"></script>
     <!-- <script defer src="bundle.js"></script> -->
   </body>
