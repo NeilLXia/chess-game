@@ -15,6 +15,5 @@ pip3 install -r requirements.txt
 # run server
 python3 server/manage.py makemigrations
 python3 server/manage.py migrate
-python3 server/manage.py livereload
 
 screen -d -m -L python3 server/manage.py runserver 0.0.0.0:8000
