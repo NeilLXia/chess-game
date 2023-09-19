@@ -35,6 +35,7 @@ async def getGame(request):
 async def addNode(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode())
+        print(data)
         game_id, newNode = itemgetter('game_id', 'newNode')(data)
         print("game_id:", game_id)
 
