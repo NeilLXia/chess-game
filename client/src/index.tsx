@@ -16,9 +16,31 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
+const defaultInitialState = {
+  board_state:
+    "15131416111413151212121212121212000000000000000000000000000000000000000000000000000000000000000002020202020202020503040601040305",
+  user_state: {
+    selection_1: -1,
+    selection_2: -1,
+    can_castle: {
+      black: { "0": true, "7": true },
+      white: { "56": true, "63": true },
+    },
+    player_turn: "white",
+  },
+  timer: {
+    white: { minutes: 5, seconds: 0 },
+    black: { minutes: 5, seconds: 0 },
+  },
+};
+
 // tree data from Django server
-const nodes = JSON.parse(document.getElementById("nodes").textContent);
-const gameID = JSON.parse(document.getElementById("game_id").textContent);
+const nodes = document.getElementById("nodes")
+  ? JSON.parse(document.getElementById("nodes").textContent)
+  : [defaultInitialState];
+const gameID = document.getElementById("game_id")
+  ? JSON.parse(document.getElementById("game_id").textContent)
+  : 1;
 
 const App = () => {
   const promoModalRef = useRef<HTMLDialogElement>(null);
@@ -40,18 +62,17 @@ const App = () => {
   ); // stores the current board state
   const [userState, setUserState] = useState({
     prevFirstSelection:
-      nodes![nodes.length - 1]!["user_state"]["selection_1"] || -1,
+      nodes[nodes.length - 1]["user_state"]["selection_1"] || -1,
     prevSecondSelection:
-      nodes![nodes.length - 1]!["user_state"]["selection_2"] || -1,
+      nodes[nodes.length - 1]["user_state"]["selection_2"] || -1,
     firstSelection: -1,
     secondSelection: -1,
     rootNode: JSON.stringify(recentBoardState || initialBoardState),
     currentNode: JSON.stringify(recentBoardState || initialBoardState), // current location in history
     gameWinner: "", // declare winner
-    playerTurn:
-      nodes![nodes.length - 1]!["user_state"]["player_turn"] || "white", // current player turn
+    playerTurn: nodes[nodes.length - 1]["user_state"]["player_turn"] || "white", // current player turn
     canCastle:
-      nodes![nodes.length - 1]!["user_state"]["can_castle"] ||
+      nodes[nodes.length - 1]["user_state"]["can_castle"] ||
       ({
         black: { 0: true, 7: true },
         white: { 56: true, 63: true },

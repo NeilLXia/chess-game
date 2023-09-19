@@ -8,7 +8,9 @@ const updateServerTree = async (
   const newNode = {
     game_id: gameID,
     newNode: {
-      board_state: boardState.map((num: number) => (num + 1).toString()).join(),
+      board_state: boardState
+        .map((num: number) => (num + 1).toString().padStart(2, "0"))
+        .join(""),
       user_state: {
         selection_1: userState.prevFirstSelection,
         selection_2: userState.prevSecondSelection,
@@ -21,14 +23,13 @@ const updateServerTree = async (
       },
     },
   };
-  console.log(newNode.newNode.board_state);
-  // await fetch(postURL, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(newNode),
-  // });
+  await fetch(postURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newNode),
+  });
 };
 
 export default updateServerTree;
