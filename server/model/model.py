@@ -1,6 +1,6 @@
 import json
 from bson import json_util
-from pymongo.errors import ConnectionFailure, ConfigurationError, CollectionInvalid, InvalidOperation, PyMongoError
+from pymongo.errors import PyMongoError
 import model.mongodb as mongodb
 import model.postgres as postgres
 
