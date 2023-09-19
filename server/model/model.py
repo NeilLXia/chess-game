@@ -47,8 +47,8 @@ async def createTree(root_id):
                 'root_id': root_id,
                 'nodes': [{
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '0503040601040305',
-                    'user_state': {'selection_1': None,
-                                   'selection_2': None,
+                    'user_state': {'selection_1': -1,
+                                   'selection_2': -1,
                                    'can_castle': {
                                        'black': {'0': True, '7': True},
                                        'white': {'56': True, '63': True},

@@ -23,6 +23,7 @@ const updateServerTree = async (
       },
     },
   };
+  console.log(newNode.newNode.board_state);
   await fetch(postURL, {
     method: "POST",
     headers: {
