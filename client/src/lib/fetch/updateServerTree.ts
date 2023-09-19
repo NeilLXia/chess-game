@@ -5,7 +5,6 @@ const updateServerTree = async (
   boardState: number[],
   userState: { [key: string]: any }
 ) => {
-  console.log(gameID);
   const newNode = {
     game_id: gameID,
     newNode: {
