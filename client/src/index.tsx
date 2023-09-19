@@ -16,28 +16,30 @@ import HistoryNode from "./lib/gameHandler/referenceData/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
 import HistoryGraph from "./components/historyRender/historyGraph";
 
-const defaultInitialState = {
-  board_state:
-    "15131416111413151212121212121212000000000000000000000000000000000000000000000000000000000000000002020202020202020503040601040305",
-  user_state: {
-    selection_1: -1,
-    selection_2: -1,
-    can_castle: {
-      black: { "0": true, "7": true },
-      white: { "56": true, "63": true },
+const defaultNodes = [
+  {
+    board_state:
+      "15131416111413151212121212121212000000000000000000000000000000000000000000000000000000000000000002020202020202020503040601040305",
+    user_state: {
+      selection_1: -1,
+      selection_2: -1,
+      can_castle: {
+        black: { "0": true, "7": true },
+        white: { "56": true, "63": true },
+      },
+      player_turn: "white",
     },
-    player_turn: "white",
+    timer: {
+      white: { minutes: 5, seconds: 0 },
+      black: { minutes: 5, seconds: 0 },
+    },
   },
-  timer: {
-    white: { minutes: 5, seconds: 0 },
-    black: { minutes: 5, seconds: 0 },
-  },
-};
+];
 
 // tree data from Django server
 const nodes = document.getElementById("nodes")
   ? JSON.parse(document.getElementById("nodes").textContent)
-  : [defaultInitialState];
+  : defaultNodes;
 const gameID = document.getElementById("game_id")
   ? JSON.parse(document.getElementById("game_id").textContent)
   : 1;
