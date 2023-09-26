@@ -27,7 +27,6 @@ const serverNodes: ServerNode[] = document.getElementById("nodes")
 const gameID = document.getElementById("game_id")
   ? JSON.parse(document.getElementById("game_id").textContent)
   : 1;
-console.log("serverNodes: ", serverNodes);
 const allNodes: any = mapServerNode(serverNodes);
 const mostRecentNode = allNodes[allNodes.length - 1];
 const historyNodes: Map<string, HistoryNode> = new Map();
@@ -44,6 +43,7 @@ allNodes.forEach((node: any) => {
     parent,
     node.timer
   );
+  historyNode.parent?.children.add(historyNode);
   historyNodes.set(
     JSON.stringify(node.boardState) + node.userState.turnNumber.toString(),
     historyNode
