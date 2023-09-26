@@ -19,7 +19,6 @@ const updateServerTree = async (gameID: number, node: HistoryNode) => {
       timer: node.timer,
     },
   };
-  console.log(newNode.newNode.board_state);
   await fetch(postURL, {
     method: "POST",
     headers: {

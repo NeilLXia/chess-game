@@ -113,7 +113,7 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
 
     return locationIndex;
   };
-
+  console.log(rootNode);
   historyDFS(rootNode);
 
   for (let i = 0; i <= maxMoves; i++) {
