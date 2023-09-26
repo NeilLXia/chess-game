@@ -1,4 +1,4 @@
-import HistoryNode from "../gameHandler/referenceData/historyNode";
+import HistoryNode from "../graphBuilder/historyNode";
 
 const postURL = "http://52.14.94.247:8000/game/add_node";
 

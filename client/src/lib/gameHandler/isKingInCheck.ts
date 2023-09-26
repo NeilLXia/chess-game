@@ -2,10 +2,11 @@ import { pieceToNumber } from "./referenceData/pieceTypes";
 import checkKnightCollision from "./checkCollisions/checkKnightCollision";
 import checkLinearCollision from "./checkCollisions/checkLinearCollision";
 import checkAdjacentCollision from "./checkCollisions/checkAdjacentCollision";
+import UserState from "./referenceData/userStateType";
 
 interface isKingInCheckProps {
   boardState: Array<number>;
-  userState: { [key: string]: any };
+  userState: UserState;
 }
 
 const isKingInCheck = ({ boardState, userState }: isKingInCheckProps) => {

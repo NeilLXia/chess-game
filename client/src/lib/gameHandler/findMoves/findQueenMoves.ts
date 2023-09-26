@@ -2,10 +2,11 @@ import isKingInCheck from "../isKingInCheck";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../referenceData/pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
+import UserState from "../referenceData/userStateType";
 
 const findQueenMoves = (
   boardState: Array<number>,
-  userState: { [key: string]: any },
+  userState: UserState,
   index: number
 ) => {
   const playerColor = userState?.turnNumber % 2 ? "black" : "white";

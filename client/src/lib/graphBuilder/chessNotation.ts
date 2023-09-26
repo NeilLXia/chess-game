@@ -1,7 +1,8 @@
 import isKingInCheck from "../gameHandler/isKingInCheck";
 import findMovablePieces from "../gameHandler/findMovablePieces";
-import HistoryNode from "../gameHandler/referenceData/historyNode";
+import HistoryNode from "./historyNode";
 import { numberToPiece } from "../gameHandler/referenceData/pieceTypes";
+import UserState from "../gameHandler/referenceData/userStateType";
 
 const columnToLetter = {
   0: "a",
@@ -16,7 +17,7 @@ const columnToLetter = {
 
 const chessNotation = (
   boardState: Array<number>,
-  userState: { [key: string]: any },
+  userState: UserState,
   priorNode: HistoryNode
 ) => {
   const piece = numberToPiece[boardState[userState.prevSecondSelection]];

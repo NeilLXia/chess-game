@@ -1,8 +1,9 @@
-import chessNotation from "../../graphBuilder/chessNotation";
+import UserState from "../gameHandler/referenceData/userStateType";
+import chessNotation from "./chessNotation";
 
 class HistoryNode {
   boardState: Array<number>;
-  userState: { [key: string]: any };
+  userState: UserState;
   timer: { [key: string]: number };
   chessNotation: string;
   parent: HistoryNode;
@@ -10,7 +11,7 @@ class HistoryNode {
 
   constructor(
     boardState: Array<number>,
-    userState: { [key: string]: any },
+    userState: UserState,
     parent: HistoryNode,
     timer: { [key: string]: any }
   ) {

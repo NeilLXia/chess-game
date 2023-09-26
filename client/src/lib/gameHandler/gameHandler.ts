@@ -1,9 +1,10 @@
 import { MutableRefObject } from "react";
 import findMovablePieces from "./findMovablePieces";
-import HistoryNode from "./referenceData/historyNode";
+import HistoryNode from "../graphBuilder/historyNode";
 import { numberToPiece, pieceToNumber } from "./referenceData/pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
-import updateServerTree from "../fetch/updateServerTree";
+import updateServerTree from "../handleServer/updateServerTree";
+import UserState from "./referenceData/userStateType";
 
 const gameHandler = (
   gameID: number,
@@ -11,10 +12,7 @@ const gameHandler = (
     boardState,
     setBoardState,
   }: { boardState: number[]; setBoardState: Function },
-  {
-    userState,
-    setUserState,
-  }: { userState: { [key: string]: any }; setUserState: Function },
+  { userState, setUserState }: { userState: UserState; setUserState: Function },
   {
     history,
     setHistory,
@@ -103,22 +101,22 @@ const gameHandler = (
     // If king or rook moves, castling is turned off.
     if (numberToPiece[prevBoardState[indexFrom]] === "R") {
       if (
-        userState.canCastle[playerTurn][queenCastleRook] === true &&
+        userState.canCastle[playerTurn]["queen"] === true &&
         indexFrom === queenCastleRook
       ) {
-        setUserState((prevState: { [key: string]: any }) => {
+        setUserState((prevState: UserState) => {
           const newState = { ...prevState };
-          newState.canCastle[playerTurn][queenCastleRook] = false;
+          newState.canCastle[playerTurn]["queen"] = false;
           return newState;
         });
       }
       if (
-        userState.canCastle[playerTurn][kingCastleRook] === true &&
+        userState.canCastle[playerTurn]["king"] === true &&
         indexFrom === kingCastleRook
       ) {
         setUserState((prevState: { [key: string]: any }) => {
           const newState = { ...prevState };
-          newState.canCastle[playerTurn][kingCastleRook] = false;
+          newState.canCastle[playerTurn]["king"] = false;
           return newState;
         });
       }
@@ -126,8 +124,8 @@ const gameHandler = (
     if (numberToPiece[prevBoardState[indexFrom]] === "K") {
       setUserState((prevState: { [key: string]: any }) => {
         const newState = { ...prevState };
-        newState.canCastle[playerTurn][kingCastleRook] = false;
-        newState.canCastle[playerTurn][queenCastleRook] = false;
+        newState.canCastle[playerTurn]["king"] = false;
+        newState.canCastle[playerTurn]["queen"] = false;
         return newState;
       });
     }
@@ -145,8 +143,8 @@ const gameHandler = (
     if (castlingBoardState) {
       setUserState((prevState: { [key: string]: any }) => {
         const newState = { ...prevState };
-        newState.canCastle[playerTurn][kingCastleRook] = false;
-        newState.canCastle[playerTurn][queenCastleRook] = false;
+        newState.canCastle[playerTurn]["king"] = false;
+        newState.canCastle[playerTurn]["queen"] = false;
         return newState;
       });
     }
@@ -168,7 +166,7 @@ const gameHandler = (
       : castlingBoardState || newBoardState;
 
     // switch player turn
-    setUserState((prevUserState: { [key: string]: any }) => {
+    setUserState((prevUserState: UserState) => {
       const newUserState = { ...prevUserState };
       newUserState.currentNode = JSON.stringify(finalBoardState);
       newUserState.turnNumber += 1;
@@ -206,7 +204,7 @@ const gameHandler = (
 };
 
 const handleTimer = (
-  userState: { [key: string]: any },
+  userState: UserState,
   timer: { white: any; black: any },
   history: Map<string, HistoryNode>
 ) => {

@@ -5,11 +5,9 @@ import findBishopMoves from "./findMoves/findBishopMoves";
 import findRookMoves from "./findMoves/findRookMoves";
 import findQueenMoves from "./findMoves/findQueenMoves";
 import findKingMoves from "./findMoves/findKingMoves";
+import UserState from "./referenceData/userStateType";
 
-const findMovablePieces = (
-  boardState: Array<number>,
-  userState: { [key: string]: any }
-) => {
+const findMovablePieces = (boardState: Array<number>, userState: UserState) => {
   const moves: { [key: number]: Array<number> } = {};
   const playerColor = userState.turnNumber % 2 ? "black" : "white";
 

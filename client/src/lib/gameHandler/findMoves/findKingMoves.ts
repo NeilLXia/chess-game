@@ -3,10 +3,11 @@ import checkAdjacentCollision from "../checkCollisions/checkAdjacentCollision";
 import checkLinearCollision from "../checkCollisions/checkLinearCollision";
 import { pieceToNumber } from "../referenceData/pieceTypes";
 import simulateBoardMove from "../simulateBoardMove";
+import UserState from "../referenceData/userStateType";
 
 const findKingMoves = (
   boardState: Array<number>,
-  userState: { [key: string]: any },
+  userState: UserState,
   index: number
 ) => {
   const playerColor = userState?.turnNumber % 2 ? "black" : "white";
@@ -58,7 +59,7 @@ const findKingMoves = (
 
     if (
       collisions.has(queenCastleRook) &&
-      userState.canCastle[playerColor][queenCastleRook]
+      userState.canCastle[playerColor]["queen"]
     ) {
       if (
         isKingInCheck({ boardState, userState }) &&
@@ -77,7 +78,7 @@ const findKingMoves = (
 
     if (
       collisions.has(kingCastleRook) &&
-      userState.canCastle[playerColor][kingCastleRook]
+      userState.canCastle[playerColor]["king"]
     ) {
       if (
         isKingInCheck({ boardState, userState }) &&

@@ -5,7 +5,7 @@ import {
   BoardContext,
   HistoryContext,
 } from "../../contexts/userContext";
-import HistoryNode from "../../lib/gameHandler/referenceData/historyNode";
+import HistoryNode from "../../lib/graphBuilder/historyNode";
 
 interface HistoryGraphProps {
   historyGraphRef: MutableRefObject<SVGSVGElement>;
@@ -113,7 +113,6 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
 
     return locationIndex;
   };
-  console.log(rootNode);
   historyDFS(rootNode);
 
   for (let i = 0; i <= maxMoves; i++) {
