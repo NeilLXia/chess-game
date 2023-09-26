@@ -175,10 +175,10 @@ const gameHandler = (
 
       // add move to history
       setHistory((prevState: Map<string, HistoryNode>) => {
+        const historyKey =
+          JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
         const newNode =
-          history.get(
-            JSON.stringify(finalBoardState) + newUserState.turnNumber.toString()
-          ) ||
+          history.get(historyKey) ||
           new HistoryNode(
             finalBoardState,
             newUserState,
@@ -188,12 +188,11 @@ const gameHandler = (
             ),
             timer
           );
-        newNode.parent?.children.add(newNode);
-        prevState.set(
-          JSON.stringify(finalBoardState) + newUserState.turnNumber.toString(),
-          newNode
-        );
-        updateServerTree(gameID, newNode);
+        if (history.has(historyKey)) {
+          updateServerTree(gameID, newNode);
+          newNode.parent?.children.add(newNode);
+        }
+        prevState.set(historyKey, newNode);
 
         return prevState;
       });
