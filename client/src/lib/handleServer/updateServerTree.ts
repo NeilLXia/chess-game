@@ -6,7 +6,9 @@ const updateServerTree = async (gameID: number, node: HistoryNode) => {
   const newNode = {
     game_id: gameID,
     newNode: {
-      parent_state: node.parent.boardState,
+      parent_state: node.parent.boardState
+        .map((num: number) => (num + 1).toString().padStart(2, "0"))
+        .join(""),
       board_state: node.boardState
         .map((num: number) => (num + 1).toString().padStart(2, "0"))
         .join(""),

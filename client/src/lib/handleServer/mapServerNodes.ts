@@ -5,7 +5,6 @@ import ServerNode from "./serverNode";
 
 const mapServerNode = (serverNodes: ServerNode[]) => {
   return serverNodes.map((serverNode: ServerNode) => {
-    console.log(serverNode["board_state"], serverNode["parent_state"]);
     const boardState: number[] = convertBoardStateStrToArr(
       serverNode["board_state"]
     );
