@@ -521,7 +521,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar convertBoardStateStrToArr = function (boardString) {\n    if (!boardString)\n        return null;\n    return boardString\n        .split(/(..)/g)\n        .filter(function (s) { return s; })\n        .map(function (s) {\n        return Number(s) - 1;\n    });\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (convertBoardStateStrToArr);\n\n\n//# sourceURL=webpack://chess-game/./client/src/lib/handleServer/convertBoardStateStrToArr.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nvar convertBoardStateStrToArr = function (boardString) {\n    if (!boardString)\n        return null;\n    console.log(boardString, typeof boardString);\n    return boardString\n        .split(/(..)/g)\n        .filter(function (s) { return s; })\n        .map(function (s) {\n        return Number(s) - 1;\n    });\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (convertBoardStateStrToArr);\n\n\n//# sourceURL=webpack://chess-game/./client/src/lib/handleServer/convertBoardStateStrToArr.ts?");
 
 /***/ }),
 
