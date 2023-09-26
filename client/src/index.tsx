@@ -37,12 +37,10 @@ allNodes.forEach((node: any) => {
       JSON.stringify(node.parentState) +
         (node.userState.turnNumber - 1).toString()
     ) || null;
-  const historyNode = new HistoryNode(
-    node.boardState,
-    node.userState,
-    parent,
-    node.timer
-  );
+  const historyNode =
+    historyNodes.get(
+      JSON.stringify(node.boardState) + node.userState.turnNumber.toString()
+    ) || new HistoryNode(node.boardState, node.userState, parent, node.timer);
   historyNode.parent?.children.add(historyNode);
   historyNodes.set(
     JSON.stringify(node.boardState) + node.userState.turnNumber.toString(),

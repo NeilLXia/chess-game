@@ -176,7 +176,9 @@ const gameHandler = (
       // add move to history
       setHistory((prevState: Map<string, HistoryNode>) => {
         const newNode =
-          history.get(JSON.stringify(finalBoardState)) ||
+          history.get(
+            JSON.stringify(finalBoardState) + newUserState.turnNumber.toString()
+          ) ||
           new HistoryNode(
             finalBoardState,
             newUserState,
