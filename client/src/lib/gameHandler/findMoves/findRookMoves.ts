@@ -8,7 +8,7 @@ const findRookMoves = (
   userState: { [key: string]: any },
   index: number
 ) => {
-  const playerColor = userState.playerTurn;
+  const playerColor = userState?.turnNumber % 2 ? "black" : "white";
   const opponentColor = playerColor === "white" ? "black" : "white";
   const move = {
     moveRange: new Set(),

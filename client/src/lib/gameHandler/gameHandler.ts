@@ -24,6 +24,7 @@ const gameHandler = (
   setMoves: Function,
   timer: { white: any; black: any }
 ) => {
+  const playerTurn = userState.turnNumber % 2 ? "black" : "white";
   handleTimer(userState, timer, history);
 
   // find moves for player and disable moves if there is a game winner
@@ -50,12 +51,12 @@ const gameHandler = (
   ];
 
   const isPawnReachEnd =
-    boardState[indexFrom] === (userState.playerTurn === "white" ? 1 : 11) &&
-    Math.floor(indexTo / 8) === (userState.playerTurn === "white" ? 0 : 7);
+    boardState[indexFrom] === (playerTurn === "white" ? 1 : 11) &&
+    Math.floor(indexTo / 8) === (playerTurn === "white" ? 0 : 7);
 
   // check for pawn promotion and prompt the user for a promotion piece.
   if (isPawnReachEnd && userState.promoValue === "") {
-    openPromoModal(indexTo, userState.playerTurn, setUserState, promoModalRef);
+    openPromoModal(indexTo, playerTurn, setUserState, promoModalRef);
     return;
   }
 
@@ -85,7 +86,7 @@ const gameHandler = (
     // check for pawn promotion and set new board state.
     if (userState.isPromo) {
       newBoardState[indexTo] = isPawnReachEnd
-        ? pieceToNumber[userState.promoValue][userState.playerTurn]
+        ? pieceToNumber[userState.promoValue][playerTurn]
         : newBoardState[indexTo];
       setUserState((prevState: { [key: string]: any }) => {
         return { ...prevState, isPromo: false, promoValue: "" };
@@ -96,28 +97,28 @@ const gameHandler = (
     // setBoardState((prevBoardState: Array<number>) => {
     //   const newBoardState = simulateBoardMove(prevBoardState, indexFrom, indexTo);
 
-    const queenCastleRook = userState.playerTurn === "white" ? 56 : 0;
-    const kingCastleRook = userState.playerTurn === "white" ? 63 : 7;
+    const queenCastleRook = playerTurn === "white" ? 56 : 0;
+    const kingCastleRook = playerTurn === "white" ? 63 : 7;
 
     // If king or rook moves, castling is turned off.
     if (numberToPiece[prevBoardState[indexFrom]] === "R") {
       if (
-        userState.canCastle[userState.playerTurn][queenCastleRook] === true &&
+        userState.canCastle[playerTurn][queenCastleRook] === true &&
         indexFrom === queenCastleRook
       ) {
         setUserState((prevState: { [key: string]: any }) => {
           const newState = { ...prevState };
-          newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+          newState.canCastle[playerTurn][queenCastleRook] = false;
           return newState;
         });
       }
       if (
-        userState.canCastle[userState.playerTurn][kingCastleRook] === true &&
+        userState.canCastle[playerTurn][kingCastleRook] === true &&
         indexFrom === kingCastleRook
       ) {
         setUserState((prevState: { [key: string]: any }) => {
           const newState = { ...prevState };
-          newState.canCastle[userState.playerTurn][kingCastleRook] = false;
+          newState.canCastle[playerTurn][kingCastleRook] = false;
           return newState;
         });
       }
@@ -125,16 +126,15 @@ const gameHandler = (
     if (numberToPiece[prevBoardState[indexFrom]] === "K") {
       setUserState((prevState: { [key: string]: any }) => {
         const newState = { ...prevState };
-        newState.canCastle[userState.playerTurn][kingCastleRook] = false;
-        newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+        newState.canCastle[playerTurn][kingCastleRook] = false;
+        newState.canCastle[playerTurn][queenCastleRook] = false;
         return newState;
       });
     }
 
     // check for castling moves. if king moves 2 squares, it's a castle move.
     const isKingMoveTwo =
-      prevBoardState[indexFrom] ===
-        (userState.playerTurn === "white" ? 0 : 10) &&
+      prevBoardState[indexFrom] === (playerTurn === "white" ? 0 : 10) &&
       Math.abs(indexFrom - indexTo) === 2;
 
     const castlingBoardState = isKingMoveTwo
@@ -145,17 +145,16 @@ const gameHandler = (
     if (castlingBoardState) {
       setUserState((prevState: { [key: string]: any }) => {
         const newState = { ...prevState };
-        newState.canCastle[userState.playerTurn][kingCastleRook] = false;
-        newState.canCastle[userState.playerTurn][queenCastleRook] = false;
+        newState.canCastle[playerTurn][kingCastleRook] = false;
+        newState.canCastle[playerTurn][queenCastleRook] = false;
         return newState;
       });
     }
 
     // check for en passant. if the pawn moves diagonally to an empty square, it's an en passant.
-    const oneRowForward = userState.playerTurn === "white" ? -8 : 8;
+    const oneRowForward = playerTurn === "white" ? -8 : 8;
     const isPawnAttackingEmpty =
-      prevBoardState[indexFrom] ===
-        (userState.playerTurn === "white" ? 1 : 11) &&
+      prevBoardState[indexFrom] === (playerTurn === "white" ? 1 : 11) &&
       prevBoardState[indexTo] < 0 &&
       (Math.abs(indexTo - indexFrom) === 7 ||
         Math.abs(indexTo - indexFrom) === 9);
@@ -169,11 +168,10 @@ const gameHandler = (
       : castlingBoardState || newBoardState;
 
     // switch player turn
-    setUserState((prevState: { [key: string]: any }) => {
-      const newUserState = { ...prevState };
+    setUserState((prevUserState: { [key: string]: any }) => {
+      const newUserState = { ...prevUserState };
       newUserState.currentNode = JSON.stringify(finalBoardState);
-      newUserState.playerTurn =
-        newUserState.playerTurn === "white" ? "black" : "white";
+      newUserState.turnNumber += 1;
       // determine new moves available for next player
       setMoves(() => findMovablePieces(newBoardState, newUserState));
 
@@ -184,16 +182,21 @@ const gameHandler = (
           new HistoryNode(
             finalBoardState,
             newUserState,
-            history.get(JSON.stringify(prevBoardState)),
+            history.get(
+              JSON.stringify(prevBoardState) +
+                prevUserState.turnNumber.toString()
+            ),
             timer
           );
         newNode.parent?.children.add(newNode);
-        prevState.set(JSON.stringify(finalBoardState), newNode);
+        prevState.set(
+          JSON.stringify(finalBoardState) + newUserState.turnNumber.toString(),
+          newNode
+        );
+        updateServerTree(gameID, newNode);
 
         return prevState;
       });
-
-      updateServerTree(gameID, finalBoardState, newUserState);
 
       return newUserState;
     });
@@ -208,16 +211,16 @@ const handleTimer = (
   history: Map<string, HistoryNode>
 ) => {
   // start and stop timers based on player turn
-  if (history.get(userState.currentNode).parent === null) {
+  if (userState.turnNumber === 0 || userState.gameWinner === "") {
     timer.white.pause();
     timer.black.pause();
   } else {
-    if (userState.playerTurn === "white" && userState.gameWinner === "") {
-      timer.white.resume();
-      timer.black.pause();
-    } else {
+    if (userState.turnNumber % 2) {
       timer.black.resume();
       timer.white.pause();
+    } else {
+      timer.white.resume();
+      timer.black.pause();
     }
   }
 };

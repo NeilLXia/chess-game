@@ -1,26 +1,22 @@
+import HistoryNode from "../gameHandler/referenceData/historyNode";
+
 const postURL = "http://52.14.94.247:8000/game/add_node";
 
-const updateServerTree = async (
-  gameID: number,
-  boardState: number[],
-  userState: { [key: string]: any }
-) => {
+const updateServerTree = async (gameID: number, node: HistoryNode) => {
   const newNode = {
     game_id: gameID,
     newNode: {
-      board_state: boardState
+      parent_state: node.parent.boardState,
+      board_state: node.boardState
         .map((num: number) => (num + 1).toString().padStart(2, "0"))
         .join(""),
       user_state: {
-        selection_1: userState.prevFirstSelection,
-        selection_2: userState.prevSecondSelection,
-        can_castle: userState.canCastle,
-        player_turn: userState.playerTurn,
+        selection_1: node.userState.prevFirstSelection,
+        selection_2: node.userState.prevSecondSelection,
+        can_castle: node.userState.canCastle,
+        turn_number: node.userState.turnNumber,
       },
-      timer: {
-        white: { minutes: 5, seconds: 0 },
-        black: { minutes: 5, seconds: 0 },
-      },
+      timer: node.timer,
     },
   };
   console.log(newNode.newNode.board_state);

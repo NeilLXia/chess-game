@@ -43,19 +43,31 @@ const nodes = document.getElementById("nodes")
 const gameID = document.getElementById("game_id")
   ? JSON.parse(document.getElementById("game_id").textContent)
   : 1;
+const mostRecentNode = nodes[nodes.length - 1];
+const recentBoardState = mostRecentNode
+  ? mostRecentNode["board_state"]
+      .split(/(..)/g)
+      .filter((s: string) => s)
+      .map((s: string) => {
+        return Number(s) - 1;
+      })
+  : initialBoardState;
+const prevFirstSelection =
+  nodes[nodes.length - 1]["user_state"]["selection_1"] || -1;
+const prevSecondSelection =
+  nodes[nodes.length - 1]["user_state"]["selection_2"] || -1;
+const turnNumber = nodes[nodes.length - 1]["user_state"]["turn_number"] || 0;
+const canCastle =
+  nodes[nodes.length - 1]["user_state"]["can_castle"] ||
+  ({
+    black: { 0: true, 7: true },
+    white: { 56: true, 63: true },
+  } as { [key: string]: { [key: string]: boolean } });
 
 const App = () => {
   const promoModalRef = useRef<HTMLDialogElement>(null);
   const gameEndModalRef = useRef<HTMLDialogElement>(null);
   const historyGraphRef = useRef<SVGSVGElement>(null);
-
-  const mostRecentNode = nodes[nodes.length - 1];
-  const recentBoardState = mostRecentNode!["board_state"]
-    .split(/(..)/g)
-    .filter((s: string) => s)
-    .map((s: string) => {
-      return Number(s) - 1;
-    });
 
   const playerTimer = new Date().getTime() + 5 * 60000; // sets the initial timers for each player
   const [moves, setMoves] = useState({}); // stores the available moves for the player
@@ -63,22 +75,15 @@ const App = () => {
     recentBoardState || initialBoardState
   ); // stores the current board state
   const [userState, setUserState] = useState({
-    prevFirstSelection:
-      nodes[nodes.length - 1]["user_state"]["selection_1"] || -1,
-    prevSecondSelection:
-      nodes[nodes.length - 1]["user_state"]["selection_2"] || -1,
+    prevFirstSelection: prevFirstSelection,
+    prevSecondSelection: prevSecondSelection,
     firstSelection: -1,
     secondSelection: -1,
-    rootNode: JSON.stringify(recentBoardState || initialBoardState),
-    currentNode: JSON.stringify(recentBoardState || initialBoardState), // current location in history
+    rootNode: JSON.stringify(recentBoardState) + "0",
+    currentNode: JSON.stringify(recentBoardState) + "0", // current location in history
     gameWinner: "", // declare winner
-    playerTurn: nodes[nodes.length - 1]["user_state"]["player_turn"] || "white", // current player turn
-    canCastle:
-      nodes[nodes.length - 1]["user_state"]["can_castle"] ||
-      ({
-        black: { 0: true, 7: true },
-        white: { 56: true, 63: true },
-      } as { [key: string]: { [key: string]: boolean } }),
+    turnNumber: turnNumber, // current player turn
+    canCastle: canCastle,
     isPromo: false, // indicates whether a pawn is up for promotion
     promoValue: "", // stores the selected pawn promotion value
   });
@@ -104,7 +109,10 @@ const App = () => {
   const [history, setHistory] = useState(() => {
     const currentNode = new HistoryNode(boardState, userState, null, timer);
     const historyMap = new Map() as Map<string, HistoryNode>;
-    historyMap.set(JSON.stringify(boardState), currentNode);
+    historyMap.set(
+      JSON.stringify(boardState) + userState.turnNumber.toString(),
+      currentNode
+    );
     return historyMap;
   });
 

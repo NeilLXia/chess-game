@@ -32,10 +32,10 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
   let maxVariation = 0;
 
   const historyDFS = (node: HistoryNode) => {
-    if (!nodeCounter[node.moveNumber]) {
-      nodeCounter[node.moveNumber] = 0;
+    if (!nodeCounter[node.userState.turnNumber]) {
+      nodeCounter[node.userState.turnNumber] = 0;
     }
-    nodeCounter[node.moveNumber]++;
+    nodeCounter[node.userState.turnNumber]++;
 
     const childIndices: number[] = [];
     let minimumChildIndex = Infinity;
@@ -50,12 +50,12 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
 
     const locationIndex =
       minimumChildIndex === Infinity
-        ? nodeCounter[node.moveNumber]
-        : Math.max(minimumChildIndex, nodeCounter[node.moveNumber]);
+        ? nodeCounter[node.userState.turnNumber]
+        : Math.max(minimumChildIndex, nodeCounter[node.userState.turnNumber]);
 
     numberOfBranchesByNode.set(node, locationIndex);
     maxVariation = Math.max(maxVariation, locationIndex);
-    maxMoves = Math.max(maxMoves, node.moveNumber);
+    maxMoves = Math.max(maxMoves, node.userState.turnNumber);
 
     childIndices.forEach((childIndex: number) => {
       graphLines.push(
@@ -63,10 +63,12 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
           key={"line of " + JSON.stringify(node) + "to " + childIndex}
           d={`M${xSpacing / 2 + xSpacing * locationIndex} ${
             ySpacing / 2 +
-            ySpacing * node.moveNumber +
-            (node.moveNumber > 0 ? Number(nodeRadius) * 2.5 : 0)
+            ySpacing * node.userState.turnNumber +
+            (node.userState.turnNumber > 0 ? Number(nodeRadius) * 2.5 : 0)
           } L${xSpacing / 2 + xSpacing * childIndex} ${
-            ySpacing / 2 + ySpacing * (node.moveNumber + 1) - Number(nodeRadius)
+            ySpacing / 2 +
+            ySpacing * (node.userState.turnNumber + 1) -
+            Number(nodeRadius)
           }`}
           stroke="white"
         />
@@ -77,9 +79,9 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
       <circle
         key={JSON.stringify(node)}
         cx={`${xSpacing / 2 + xSpacing * locationIndex}`}
-        cy={`${ySpacing / 2 + ySpacing * node.moveNumber}`}
+        cy={`${ySpacing / 2 + ySpacing * node.userState.turnNumber}`}
         r={nodeRadius}
-        fill={node.moveNumber % 2 !== 0 ? "#eee" : "#222"}
+        fill={node.userState.turnNumber % 2 !== 0 ? "#eee" : "#222"}
         stroke={node === history.get(userState.currentNode) ? "#f00" : "#fff"}
         strokeWidth="2"
         onClick={() => {
@@ -96,7 +98,9 @@ function HistoryGraph({ historyGraphRef }: HistoryGraphProps) {
         key={"chess notation for " + JSON.stringify(node)}
         x={`${xSpacing / 2 + xSpacing * locationIndex}`}
         y={`${
-          ySpacing / 2 + ySpacing * node.moveNumber + Number(nodeRadius) * 2
+          ySpacing / 2 +
+          ySpacing * node.userState.turnNumber +
+          Number(nodeRadius) * 2
         }`}
         className="graph-label"
         fontSize="14"

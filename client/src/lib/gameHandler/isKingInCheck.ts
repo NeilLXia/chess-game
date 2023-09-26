@@ -9,7 +9,7 @@ interface isKingInCheckProps {
 }
 
 const isKingInCheck = ({ boardState, userState }: isKingInCheckProps) => {
-  const playerColor = userState?.playerTurn || "white";
+  const playerColor = userState?.turnNumber % 2 ? "black" : "white";
   const kingIndex = boardState?.indexOf(pieceToNumber["K"][playerColor]);
 
   if (isPawnAttackingKing(boardState, kingIndex, playerColor)) {

@@ -46,6 +46,7 @@ async def createTree(root_id):
             treeDB['trees'].insert_one({
                 'root_id': root_id,
                 'nodes': [{
+                    'parent_state': None,
                     'board_state': '1513141611141315' + '12' * 8 + '00' * 32 + '02' * 8 + '0503040601040305',
                     'user_state': {'selection_1': -1,
                                    'selection_2': -1,
@@ -53,7 +54,7 @@ async def createTree(root_id):
                                        'black': {'0': True, '7': True},
                                        'white': {'56': True, '63': True},
                                    },
-                                   'player_turn': 'white'},
+                                   'turn_number': 0},
                     'timer': {'white': {'minutes': 5, 'seconds': 0},
                               'black': {'minutes': 5, 'seconds': 0}}
                 }]

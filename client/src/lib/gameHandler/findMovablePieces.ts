@@ -11,7 +11,7 @@ const findMovablePieces = (
   userState: { [key: string]: any }
 ) => {
   const moves: { [key: number]: Array<number> } = {};
-  const playerColor = userState.playerTurn;
+  const playerColor = userState.turnNumber % 2 ? "black" : "white";
 
   const moveFinders: { [key: string]: Function } = {
     P: findPawnMoves,

@@ -4,7 +4,6 @@ class HistoryNode {
   boardState: Array<number>;
   userState: { [key: string]: any };
   timer: { [key: string]: number };
-  moveNumber: number;
   chessNotation: string;
   parent: HistoryNode;
   children: Set<HistoryNode>;
@@ -23,7 +22,6 @@ class HistoryNode {
     };
     this.children = new Set() as Set<HistoryNode>;
     this.parent = parent;
-    this.moveNumber = (parent ? parent.moveNumber : -1) + 1;
     this.chessNotation = parent
       ? chessNotation(boardState, userState, parent)
       : "";
