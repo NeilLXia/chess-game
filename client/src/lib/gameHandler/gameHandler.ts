@@ -188,7 +188,7 @@ const gameHandler = (
             ),
             timer
           );
-        if (history.has(historyKey)) {
+        if (!history.has(historyKey)) {
           updateServerTree(gameID, newNode);
           newNode.parent?.children.add(newNode);
         }
