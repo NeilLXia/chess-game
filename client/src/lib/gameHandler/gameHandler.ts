@@ -3,7 +3,6 @@ import findMovablePieces from "./findMovablePieces";
 import HistoryNode from "../graphBuilder/historyNode";
 import { numberToPiece, pieceToNumber } from "./referenceData/pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
-import updateServerTree from "../handleServer/updateServerTree";
 import UserState from "./referenceData/userStateType";
 
 const gameHandler = (
@@ -15,8 +14,8 @@ const gameHandler = (
   { userState, setUserState }: { userState: UserState; setUserState: Function },
   {
     history,
-    setHistory,
-  }: { history: Map<string, HistoryNode>; setHistory: Function },
+    addHistNode,
+  }: { history: Map<string, HistoryNode>; addHistNode: Function },
   promoModalRef: MutableRefObject<HTMLDialogElement>,
   gameEndModalRef: MutableRefObject<HTMLDialogElement>,
   setMoves: Function,
@@ -186,29 +185,7 @@ const gameHandler = (
           ),
           timer
         );
-      setHistory(gameID, historyKey, newNode);
-      // setHistory((prevState: Map<string, HistoryNode>) => {
-      //   const historyKey =
-      //     JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
-      //   const newNode =
-      //     history.get(historyKey) ||
-      //     new HistoryNode(
-      //       finalBoardState,
-      //       newUserState,
-      //       history.get(
-      //         JSON.stringify(prevBoardState) +
-      //           prevUserState.turnNumber.toString()
-      //       ),
-      //       timer
-      //     );
-      //   if (!history.has(historyKey)) {
-      //     updateServerTree(gameID, newNode);
-      //     newNode.parent?.children.add(newNode);
-      //   }
-      //   prevState.set(historyKey, newNode);
-
-      //   return prevState;
-      // });
+      addHistNode(gameID, historyKey, newNode);
 
       return newUserState;
     });

@@ -27,7 +27,7 @@ export function useHistory() {
     setHistory(historyNodes);
   };
 
-  const addNode = (gameID: number, key: string, newNode: HistoryNode) => {
+  const addHistNode = (gameID: number, key: string, newNode: HistoryNode) => {
     setHistory((prevState: Map<string, HistoryNode>) => {
       if (!history.has(key)) {
         updateServerTree(gameID, newNode);
@@ -38,5 +38,5 @@ export function useHistory() {
       return prevState;
     });
   };
-  return { history, setHistory, addNode, translateExistingHist };
+  return { history, addHistNode, translateExistingHist };
 }
