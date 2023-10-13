@@ -174,28 +174,41 @@ const gameHandler = (
       setMoves(() => findMovablePieces(newBoardState, newUserState));
 
       // add move to history
-      setHistory((prevState: Map<string, HistoryNode>) => {
-        const historyKey =
-          JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
-        const newNode =
-          history.get(historyKey) ||
-          new HistoryNode(
-            finalBoardState,
-            newUserState,
-            history.get(
-              JSON.stringify(prevBoardState) +
-                prevUserState.turnNumber.toString()
-            ),
-            timer
-          );
-        if (!history.has(historyKey)) {
-          updateServerTree(gameID, newNode);
-          newNode.parent?.children.add(newNode);
-        }
-        prevState.set(historyKey, newNode);
+      const historyKey =
+        JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
+      const newNode =
+        history.get(historyKey) ||
+        new HistoryNode(
+          finalBoardState,
+          newUserState,
+          history.get(
+            JSON.stringify(prevBoardState) + prevUserState.turnNumber.toString()
+          ),
+          timer
+        );
+      setHistory(gameID, historyKey, newNode);
+      // setHistory((prevState: Map<string, HistoryNode>) => {
+      //   const historyKey =
+      //     JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
+      //   const newNode =
+      //     history.get(historyKey) ||
+      //     new HistoryNode(
+      //       finalBoardState,
+      //       newUserState,
+      //       history.get(
+      //         JSON.stringify(prevBoardState) +
+      //           prevUserState.turnNumber.toString()
+      //       ),
+      //       timer
+      //     );
+      //   if (!history.has(historyKey)) {
+      //     updateServerTree(gameID, newNode);
+      //     newNode.parent?.children.add(newNode);
+      //   }
+      //   prevState.set(historyKey, newNode);
 
-        return prevState;
-      });
+      //   return prevState;
+      // });
 
       return newUserState;
     });

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext, MutableRefObject } from "react";
 import { pieceToUnicode } from "../../lib/gameHandler/referenceData/pieceTypes";
-import { UserContext } from "../../contexts/userContext";
+import { UserContext } from "../../hooks/userContext";
 
 function PromotionDialog({
   promoModalRef,

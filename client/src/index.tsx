@@ -2,51 +2,41 @@ import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import * as ReactDOM from "react-dom/client";
 import "./css/app.css";
-import {
-  UserContext,
-  BoardContext,
-  HistoryContext,
-} from "./contexts/userContext";
+import { UserContext, BoardContext, HistoryContext } from "./hooks/userContext";
+import { useHistory } from "./hooks/useHistory";
 import initialBoardState from "./lib/gameHandler/referenceData/initialBoardState";
-import ChessBoard from "./components/boardRender/chessBoard";
+import ChessBoard from "./components/board/chessBoard";
 import gameHandler from "./lib/gameHandler/gameHandler";
 import { useTimer } from "react-timer-hook";
 import Header from "./components/header";
 import HistoryNode from "./lib/graphBuilder/historyNode";
 import GameEndDialog from "./components/dialogs/gameEndDialog";
-import HistoryGraph from "./components/historyRender/historyGraph";
-import ServerNode from "./lib/handleServer/serverNode";
+import HistoryGraph from "./components/history/historyGraph";
 import UserState from "./lib/gameHandler/referenceData/userStateType";
-import defaultNodes from "./lib/gameHandler/referenceData/defaultNodes";
 import mapServerNode from "./lib/handleServer/mapServerNodes";
+import { gameID, serverNodes } from "./lib/handleServer/readServerData";
 
-// tree data from Django server
-const serverNodes: ServerNode[] = document.getElementById("nodes")
-  ? JSON.parse(document.getElementById("nodes").textContent)
-  : defaultNodes;
-const gameID = document.getElementById("game_id")
-  ? JSON.parse(document.getElementById("game_id").textContent)
-  : 1;
 const allNodes: any = mapServerNode(serverNodes);
 const mostRecentNode = allNodes[allNodes.length - 1];
-const historyNodes: Map<string, HistoryNode> = new Map();
 
-allNodes.forEach((node: any) => {
-  const parent =
-    historyNodes.get(
-      JSON.stringify(node.parentState) +
-        (node.userState.turnNumber - 1).toString()
-    ) || null;
-  const historyNode =
-    historyNodes.get(
-      JSON.stringify(node.boardState) + node.userState.turnNumber.toString()
-    ) || new HistoryNode(node.boardState, node.userState, parent, node.timer);
-  historyNode.parent?.children.add(historyNode);
-  historyNodes.set(
-    JSON.stringify(node.boardState) + node.userState.turnNumber.toString(),
-    historyNode
-  );
-});
+// initialize history based on the data pulled from server
+// const historyNodes: Map<string, HistoryNode> = new Map();
+// allNodes.forEach((node: any) => {
+//   const parent =
+//     historyNodes.get(
+//       JSON.stringify(node.parentState) +
+//         (node.userState.turnNumber - 1).toString()
+//     ) || null;
+//   const historyNode =
+//     historyNodes.get(
+//       JSON.stringify(node.boardState) + node.userState.turnNumber.toString()
+//     ) || new HistoryNode(node.boardState, node.userState, parent, node.timer);
+//   historyNode.parent?.children.add(historyNode);
+//   historyNodes.set(
+//     JSON.stringify(node.boardState) + node.userState.turnNumber.toString(),
+//     historyNode
+//   );
+// });
 
 const App = () => {
   const promoModalRef = useRef<HTMLDialogElement>(null);
@@ -80,7 +70,10 @@ const App = () => {
   };
 
   // set the first history state to the board's initial state
-  const [history, setHistory] = useState(historyNodes);
+  // const [history, setHistory] = useState(historyNodes);
+  const { history, addNode, translateExistingHist } = useHistory();
+  if (!history) translateExistingHist(allNodes);
+  const setHistory = addNode;
 
   useEffect(() => {
     gameHandler(

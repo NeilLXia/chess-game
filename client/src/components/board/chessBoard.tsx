@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext, MutableRefObject } from "react";
-import { UserContext } from "../../contexts/userContext";
+import { UserContext } from "../../hooks/userContext";
 import ChessSquare from "./chessSquare";
 import PromotionDialog from "../dialogs/promotionDialog";
 

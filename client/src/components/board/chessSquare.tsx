@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext } from "react";
 
-import { UserContext, BoardContext } from "../../contexts/userContext";
+import { UserContext, BoardContext } from "../../hooks/userContext";
 import { numberToUnicode } from "../../lib/gameHandler/referenceData/pieceTypes";
 
 interface ChessSquareProps {

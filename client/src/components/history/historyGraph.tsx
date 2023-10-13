@@ -4,7 +4,7 @@ import {
   UserContext,
   BoardContext,
   HistoryContext,
-} from "../../contexts/userContext";
+} from "../../hooks/userContext";
 import HistoryNode from "../../lib/graphBuilder/historyNode";
 
 interface HistoryGraphProps {
