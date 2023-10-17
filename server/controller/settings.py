@@ -88,12 +88,12 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'project.routing.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-    }
-}
+# ASGI_APPLICATION = 'project.routing.application'
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': "channels.layers.InMemoryChannelLayer"
+#     }
+# }
 
 WSGI_APPLICATION = 'controller.wsgi.application'
 
