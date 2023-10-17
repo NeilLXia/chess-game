@@ -4,6 +4,7 @@ import HistoryNode from "../graphBuilder/historyNode";
 import { numberToPiece, pieceToNumber } from "./referenceData/pieceTypes";
 import simulateBoardMove from "./simulateBoardMove";
 import UserState from "./referenceData/userStateType";
+import { getHistKey } from "../../hooks/useHistory";
 
 const gameHandler = (
   gameID: number,
@@ -173,16 +174,13 @@ const gameHandler = (
       setMoves(() => findMovablePieces(newBoardState, newUserState));
 
       // add move to history
-      const historyKey =
-        JSON.stringify(finalBoardState) + newUserState.turnNumber.toString();
+      const historyKey = getHistKey(finalBoardState, newUserState.turnNumber);
       const newNode =
         history.get(historyKey) ||
         new HistoryNode(
           finalBoardState,
           newUserState,
-          history.get(
-            JSON.stringify(prevBoardState) + prevUserState.turnNumber.toString()
-          ),
+          history.get(getHistKey(prevBoardState, prevUserState.turnNumber)),
           timer
         );
       addHistNode(gameID, historyKey, newNode);
