@@ -47,7 +47,7 @@ ALLOWED_HOSTS.append(buffer.getvalue().decode('iso-8859-1').strip())
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
+    # 'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -23,5 +23,5 @@ urlpatterns = [
     path('newgame/', views.newGame, name='new_game'),
     path('game/add_node', views.addNode, name='add_node'),
     path('game/', views.getGame, name='get_game'),
-    path('game/', include('streamurls.py'))
+    path('game_stream/', include('streamurls.py'))
 ]

@@ -46,3 +46,14 @@ async def addNode(request):
     else:
         game_id = request.GET.get('game_id', None)
         return redirect(reverse('get_game') + '?game_id={id}'.format(id=game_id))
+
+
+async def getGameStream(request, game_id):
+    if not game_id:
+        return HttpResponse('Error, no game_id provided', status=400)
+
+    game_tree = model.getTree(game_id)
+    if not game_tree:
+        return HttpResponse('Error, game not found', status=404)
+
+    return render(request, 'index-django.html', context=game_tree)
