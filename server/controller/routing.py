@@ -4,8 +4,11 @@ from django.urls import re_path
 from controller.consumers import MoveRecorderConsumer
 
 websocket_urlpatterns = [
+    # re_path(
+    #     r'\/game\/\?game_id=(?P<game_name>\d+)$', MoveRecorderConsumer.as_asgi()
+    # ),
     re_path(
-        r'\/game\/\?game_id=(?P<game_name>\d+)$', MoveRecorderConsumer.as_asgi()
+        r'\/game\/\?game_id=100$', MoveRecorderConsumer.as_asgi()
     ),
 ]
 
