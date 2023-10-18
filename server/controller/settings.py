@@ -47,7 +47,7 @@ ALLOWED_HOSTS.append(buffer.getvalue().decode('iso-8859-1').strip())
 # Application definition
 
 INSTALLED_APPS = [
-    # 'channels',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,12 +88,12 @@ TEMPLATES = [
     },
 ]
 
-# ASGI_APPLICATION = 'project.routing.application'
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': "channels.layers.InMemoryChannelLayer"
-#     }
-# }
+ASGI_APPLICATION = 'project.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 WSGI_APPLICATION = 'controller.wsgi.application'
 
