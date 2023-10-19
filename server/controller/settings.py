@@ -48,6 +48,7 @@ ALLOWED_HOSTS.append(buffer.getvalue().decode('iso-8859-1').strip())
 
 INSTALLED_APPS = [
     'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,11 +90,11 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = 'controller.agsi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-    }
-}
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': "channels.layers.InMemoryChannelLayer"
+#     }
+# }
 
 WSGI_APPLICATION = 'controller.wsgi.application'
 
