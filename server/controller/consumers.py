@@ -9,22 +9,17 @@ class MoveRecorderConsumer(AsyncWebsocketConsumer):
         # self.group_name = "game_%s" % (self.game_name)
 
         # await self.channel_layer.group_add(self.group_name, self.channel_name)
-        # await self.accept()
-        await self.send({
-            'type': 'websocket.accept'
-        })
-        print('connect', event)
-        asyncio.sleep(10)
-        await self.send({
-            'type': 'websocket.close'
-        })
+        await self.accept()
 
     async def disconnect(self, event):
-        print('disconnect', event)
+        pass
         # await self.channel_layer.group_discard(self.group_name, self.channel_layer)
 
-    async def receive(self, event):
-        print('receive', event)
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+
+        self.send(text_data=json.dumps({"message": message}))
         # data_json = json.loads(data)
         # game_id = data_json['game_id']
         # newNode = data_json['newNode']
@@ -42,5 +37,3 @@ class MoveRecorderConsumer(AsyncWebsocketConsumer):
 
         # await self.send(text_data=json.dumps({'game_id': game_id,
         #                                       'newNode': newNode, }))
-
-    pass

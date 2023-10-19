@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'project.routing.application'
+ASGI_APPLICATION = 'controller.agsi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': "channels.layers.InMemoryChannelLayer"
